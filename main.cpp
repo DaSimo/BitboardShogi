@@ -486,22 +486,33 @@ std::array<std::array<BitBoard, 81>,128> const& FileAttack() {
     return data;
 }
 
+// End File Attack
 
+//Begin Diagonal Attacks
 
-size_t turnMinusPiFourth(size_t idx) {  // drehe index (bzw. entsprechende figur) um 45° im Uhrzeigersinn.
-// Beispiel: Die 0 ist ursprünglich rechts unten. Dreht man das ganze Quadrat, so erhält man ein auf einer Ecke stehendes Quadrat
-    //(sieht aus wie man sich eine Raute vorstellt) in dem die 0 ganz unten steht. Das neue Quadrat erhält man, indem man von oben nach unten
-    // "zeilenweise" auffüllt. Also komt die 0 wieder ganz als letztes. Also muss in impl. im 0.ten arrayeintrag wieder die 0 stehen.
+size_t turnMinusPiFourth(size_t idx) {  // Diese Matrix beantwortet im wesentlichen die folgende Frage:
+    // Welche Position x wird auf Position y abgebildet durch Drehung um 45 Grad im Uhrzeigersinn.
+    // Die Antwort erhält man wie folgt: Will man zum Beispiel wissen welche Zahl auf das erste Feld (wir zählen beim nullten los) abgebildet wird,
+    // gucken wir in das erste Feld (wir zählen beim nullten los) der hier angegebenen Matrix, dort steht die 9 drin. Wir wissen also, dass das neunte Feld durch Drehung auf
+    // das erste Feld abgebildet wird, was man leicht überprüft.
 
-     std::array<size_t, 81> impl =  { 0,9,1,18,10,2,27,19,11,
-                                                 3,36,28,20,12,4,45,37,29,
-                                                 21,13,5,54,46,38,30,22,14,
-                                                 6,63,55,47,39,31,23,15,7,
-                                                 72,64,56,48,40,32,24,16,8,
-                                                 73,65,57,49,41,33,25,17,74,
-                                                 66,58,50,42,34,26,75,67,59,
-                                                 51,43,35,76,68,60,52,44,77,
-                                                 69,61,53,78,70,62,79,71,80
+     std::array<size_t, 81> impl =  { 0,
+                                      9,1,
+                                      18,10,2,
+                                      27,19,11,3,
+                                      36,28,20,12,4,
+                                      45,37,29,21,13,5,
+                                      54,46,38,30,22,14,6,
+                                      63,55,47,39,31,23,15,7,
+                                      72,64,56,48,40,32,24,16,8,
+                                      73,65,57,49,41,33,25,17,
+                                      74,66,58,50,42,34,26,
+                                      75,67,59,51,43,35,
+                                      76,68,60,52,44,
+                                      77,69,61,53,
+                                      78,70,62,
+                                      79,71,
+                                      80
                                          };
 
 //     for(int j=0;j!=81;++j)
@@ -522,15 +533,23 @@ size_t turnMinusPiFourth(size_t idx) {  // drehe index (bzw. entsprechende figur
 
 
 size_t turnPiFourth(size_t idx) {  // drehe index (bzw. entsprechende figur) um 45° im Gegenuhrzeigersinn, 0 ursprünglich entspricht rechts unten.
-    static const std::array<size_t, 81> impl = { 8,7,17,6,16,26,5,15,25,
-                                                 35,4,14,24,34,44,3,13,23,
-                                                 33,43,53,2,12,22,32,42,52,
-                                                 62,1,11,21,31,41,51,61,71,
+    static const std::array<size_t, 81> impl = { 8,
+                                                 7,17,
+                                                 6,16,26,
+                                                 5,15,25,35,
+                                                 4,14,24,34,44,
+                                                 3,13,23,33,43,53,
+                                                 2,12,22,32,42,52,62,
+                                                 1,11,21,31,41,51,61,71,
                                                  0,10,20,30,40,50,60,70,70,
-                                                 9,19,29,39,49,59,69,79,18,
-                                                 28,38,48,58,68,78,27,37,47,
-                                                 57,67,77,36,46,56,66,76,45,
-                                                 55,65,75,54,64,74,63,73,72
+                                                 9,19,29,39,49,59,69,79,
+                                                 18,28,38,48,58,68,78,
+                                                 27,37,47,57,67,77,
+                                                 36,46,56,66,76,
+                                                 45,55,65,75,
+                                                 54,64,74,
+                                                 63,73,
+                                                 72
                                          };
 
 //    for(int j=0;j!=81;++j)
@@ -539,6 +558,45 @@ size_t turnPiFourth(size_t idx) {  // drehe index (bzw. entsprechende figur) um 
 //    }
     return impl[idx];
 }
+
+// diagonalRankAttack
+std:: array<std::array<BitBoard, 81>,128> genDiagonalRankAttack() { // 81 ist die Position der Figur (zweiter Index, einfach "durchzählen")
+    // 128 (erster Index) ist das Blockpattern der Zeile der Figur. Es entsteht indem man die 7er Zeile bitweise als Integer iinterpretiert, wobei 1= da steht eine Figur, 0 sonst.
+    // Wichtig: Das Blockpattern erhält man aus dem um pi/2 gedrehten Bitboard. Ein Beispiel:
+    // Sagen wir, wir haben ein ungedrehtes Bitboard, bei dem in der rechtesten Spalte in der zweiten Reihe von unten, also auf Feld 9 eine Figur steht. Unser Turm steht auch in der rechtesten Reihe, sagen auf 18.
+    // Nun drehen wir die Spalte und erhalten als Blockpattern, das die Spalte repräsentiert, 0000011 = 3 (inklusive Turm) (nach Abschneiden der beiden Randfelder). Jetzt genau wie rankAttack und am Ende zurückdrehen.
+    std:: array<std::array<BitBoard, 81>,128> result;
+
+
+
+    for (int j = 0; j!=81;++j){
+        auto currentRow = j/9;
+        auto currentCol = j%9;
+        for (int pattern=0; pattern!=128; ++pattern) {
+            std::array<std::array<bool, 11>, 11> f;
+            std::fill(begin(f), end(f), std::array<bool, 11>{false, false, false, false, false, false, false, false, false, false, false});
+            auto bitboardPattern = int2row(pattern);
+          auto upper = std::find(begin(bitboardPattern)+currentCol+1, end(bitboardPattern), true);
+          auto lower = begin(bitboardPattern) + currentCol;
+          while (lower!=begin(bitboardPattern)) {
+              --lower;
+              if (*lower == true) { break; }
+          }
+            std::fill(begin(bitboardPattern), end(bitboardPattern), false);  // alles false
+            std::fill(lower, upper+1, true);  // mittlerer teil ist jetzt true
+
+            for (int i = 0 ; i!=11; ++i) // Hier drehen wir im Endeffekt zurück.
+            {
+                f[i][currentCol+1] = bitboardPattern[10-i];
+            }
+            result[pattern][j] = mat2bb(f);
+     }
+    }
+
+
+return result;
+}
+
 
 
 
