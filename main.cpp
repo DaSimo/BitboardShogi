@@ -560,6 +560,8 @@ size_t turnPiFourth(size_t idx) {  // drehe index (bzw. entsprechende figur) um 
     return impl[idx];
 }
 
+// TODO
+// verkürzte Diagonalen müssen nicht aufgefüllt werden!
 int getBlockPatternDiagonal(BitBoard const& bb, size_t idx) {
     auto shift = (idx/9)%3;  // zeile in bitboard-drittel
     return bb[idx/27] << (9*(2-shift)+6) >> 25;  // Wollen 7 relevanten Einträge. Shiften dafür abhängig davon, in welcher Zeile wir sind, soweit nach rechts,
