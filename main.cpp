@@ -373,7 +373,7 @@ std::array<bool, 11> int2row(int row) {
 }
 
 // rank attack -------------------------------------------------------------------------------------
-std:: array<std::array<BitBoard, 81>,128> genRankAttack() { // 81 ist die Position der Figur (zweiter Index, einfach "durchzählen")
+std::array<std::array<BitBoard, 81>,128> genRankAttack() { // 81 ist die Position der Figur (zweiter Index, einfach "durchzählen")
     // 128 (erster Index) ist das Blockpattern der Zeile der Figur. Es entsteht indem man die 7er Zeile bitweise als Integer iinterpretiert, wobei 1= da steht eine Fugur, 0 sonst.
     std:: array<std::array<BitBoard, 81>,128> result;
 
@@ -440,7 +440,7 @@ size_t turnPiHalf(size_t idx) {  // drehe index (bzw. entsprechende figur) um 90
 
 // -°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°
 // fileAttack
-std:: array<std::array<BitBoard, 81>,128> genFileAttack() { // 81 ist die Position der Figur (zweiter Index, einfach "durchzählen")
+std::array<std::array<BitBoard, 81>,128> genFileAttack() { // 81 ist die Position der Figur (zweiter Index, einfach "durchzählen")
     // 128 (erster Index) ist das Blockpattern der Zeile der Figur. Es entsteht indem man die 7er Zeile bitweise als Integer iinterpretiert, wobei 1= da steht eine Figur, 0 sonst.
     // Wichtig: Das Blockpattern erhält man aus dem um pi/2 gedrehten Bitboard. Ein Beispiel:
     // Sagen wir, wir haben ein ungedrehtes Bitboard, bei dem in der rechtesten Spalte in der zweiten Reihe von unten, also auf Feld 9 eine Figur steht. Unser Turm steht auch in der rechtesten Reihe, sagen auf 18.
@@ -560,7 +560,7 @@ size_t turnPiFourth(size_t idx) {  // drehe index (bzw. entsprechende figur) um 
 }
 
 // diagonalRankAttack
-std:: array<std::array<BitBoard, 81>,128> genDiagonalRankAttack() { // 81 ist die Position der Figur (zweiter Index, einfach "durchzählen")
+std::array<std::array<BitBoard, 81>,128> genDiagonalLAttack() { // 81 ist die Position der Figur (zweiter Index, einfach "durchzählen")
     // 128 (erster Index) ist das Blockpattern der Zeile der Figur. Es entsteht indem man die 7er Zeile bitweise als Integer iinterpretiert, wobei 1= da steht eine Figur, 0 sonst.
     // Wichtig: Das Blockpattern erhält man aus dem um pi/2 gedrehten Bitboard. Ein Beispiel:
     // Sagen wir, wir haben ein ungedrehtes Bitboard, bei dem in der rechtesten Spalte in der zweiten Reihe von unten, also auf Feld 9 eine Figur steht. Unser Turm steht auch in der rechtesten Reihe, sagen auf 18.
@@ -569,25 +569,26 @@ std:: array<std::array<BitBoard, 81>,128> genDiagonalRankAttack() { // 81 ist di
 
 
 
-    for (int j = 0; j!=81;++j){
-        auto currentRow = j/9;
-        auto currentCol = j%9;
-        for (int pattern=0; pattern!=128; ++pattern) {
+    for (int j = 0; j!=81;++j){  // die  position
+        for (int pattern=0; pattern!=128; ++pattern) {  // das Diagonal-Pattern
             std::array<std::array<bool, 11>, 11> f;
             std::fill(begin(f), end(f), std::array<bool, 11>{false, false, false, false, false, false, false, false, false, false, false});
             auto bitboardPattern = int2row(pattern);
-          auto upper = std::find(begin(bitboardPattern)+currentCol+1, end(bitboardPattern), true);
-          auto lower = begin(bitboardPattern) + currentCol;
-          while (lower!=begin(bitboardPattern)) {
-              --lower;
-              if (*lower == true) { break; }
-          }
+            auto diagIdx = min(j/9, j%9)+1;
+            // upper und lower sind der nächstgrößere bzw nächstkleinere besetzte index
+            auto upper = std::find(begin(bitboardPattern)+diagIdx+1, end(bitboardPattern), true);
+            auto lower = begin(bitboardPattern) + diagIdx;
+            while (lower!=begin(bitboardPattern)) {
+                --lower;
+                if (*lower == true) { break; }
+            }
             std::fill(begin(bitboardPattern), end(bitboardPattern), false);  // alles false
             std::fill(lower, upper+1, true);  // mittlerer teil ist jetzt true
 
-            for (int i = 0 ; i!=11; ++i) // Hier drehen wir im Endeffekt zurück.
+            // copy to diagonal
+            for (int col=max(0, j%9-j/9), row=max(0, j/9-j%9), i=0 ; col!=11 and row!=11; ++col, ++row, ++i) // Hier drehen wir im Endeffekt zurück.
             {
-                f[i][currentCol+1] = bitboardPattern[10-i];
+                f[row][col] = bitboardPattern[i];
             }
             result[pattern][j] = mat2bb(f);
      }
@@ -598,7 +599,10 @@ return result;
 }
 
 
-
+std::array<std::array<BitBoard, 81>,128> const& DiagonalLAttack() {
+    const static auto data = genDiagonalLAttack();
+    return data;
+}
 
 
 std::ostream& operator <<(std::ostream& out, BitBoard const& b) { return b.print(out); }
