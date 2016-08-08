@@ -490,11 +490,12 @@ std::array<std::array<BitBoard, 81>,128> const& FileAttack() {
 
 //Begin Diagonal Attacks
 
-size_t turnMinusPiFourth(size_t idx) {  // Diese Matrix beantwortet im wesentlichen die folgende Frage:
+size_t turnMinusPiFourth(size_t idx) {  // Dieses Array beantwortet im wesentlichen die folgende Frage:
     // Welche Position x wird auf Position y abgebildet durch Drehung um 45 Grad im Uhrzeigersinn.
     // Die Antwort erhält man wie folgt: Will man zum Beispiel wissen welche Zahl auf das erste Feld (wir zählen beim nullten los) abgebildet wird,
     // gucken wir in das erste Feld (wir zählen beim nullten los) der hier angegebenen Matrix, dort steht die 9 drin. Wir wissen also, dass das neunte Feld durch Drehung auf
-    // das erste Feld abgebildet wird, was man leicht überprüft.
+    // das erste Feld abgebildet wird, was man leicht überprüft. Andersrum gedacht beantwortet dieses Array auch die folgende Frage: Betrachte eine Zahl a \in A. Sagen wir die 2.
+    // Diese ist auf Position 5. Dies sagt folgendes aus: Feld zwei wird durch Drehung auf Feld 5 abgebildet.
 
      std::array<size_t, 81> impl =  { 0,
                                       9,1,
@@ -558,6 +559,15 @@ size_t turnPiFourth(size_t idx) {  // drehe index (bzw. entsprechende figur) um 
 //    }
     return impl[idx];
 }
+
+int getBlockPatternDiagonal(BitBoard const& bb, size_t idx) {
+    auto shift = (idx/9)%3;  // zeile in bitboard-drittel
+    return bb[idx/27] << (9*(2-shift)+6) >> 25;  // Wollen 7 relevanten Einträge. Shiften dafür abhängig davon, in welcher Zeile wir sind, soweit nach rechts,
+    // dass alles unwichtige null ist. Die 6 setzt sich zusammen aus den 5 die immer null sind und zusätzlich dem einen, das wir ignorieren, weil es am Rand ist.
+    // Darum auch sieben statt 9 relevanten. Danach shiften wir wieder um 32-7 zurück. Die 7 sind die 7 die wir haben wollen.
+}
+
+
 
 // diagonalRankAttack
 std::array<std::array<BitBoard, 81>,128> genDiagonalLAttack() { // 81 ist die Position der Figur (zweiter Index, einfach "durchzählen")
