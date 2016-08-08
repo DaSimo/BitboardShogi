@@ -547,7 +547,7 @@ std::ostream& operator <<(std::ostream& out, BitBoard const& b) { return b.print
 
 using namespace std;
 
-
+//Testkommentar//
 
 
 
