@@ -642,7 +642,7 @@ std::array<std::array<BitBoard, 81>,128> genDiagonalPiFourthAttack() { // 81 ist
             std::array<std::array<bool, 11>, 11> f;
             std::fill(begin(f), end(f), std::array<bool, 11>{false, false, false, false, false, false, false, false, false, false, false});
             auto bitboardPattern = int2row(pattern);
-            auto diagIdx = min(j/9, j%9)+1;
+            auto diagIdx = 8-min(j/9, j%9)+1;
             // upper und lower sind der nächstgrößere bzw nächstkleinere besetzte index
             auto upper = std::find(begin(bitboardPattern)+diagIdx+1, end(bitboardPattern), true);
             auto lower = begin(bitboardPattern) + diagIdx;
@@ -654,9 +654,9 @@ std::array<std::array<BitBoard, 81>,128> genDiagonalPiFourthAttack() { // 81 ist
             std::fill(lower, upper+1, true);  // mittlerer teil ist jetzt true
 
             // copy to diagonal
-            for (int col=max(0, j%9-j/9), row=max(0, j/9-j%9), i=0 ; col!=11 and row!=11; ++col, ++row, ++i) // Hier drehen wir im Endeffekt zurück.
+            for (int col=max(0, j%9-j/9), row=max(0, j/9-j%9), i=0 ; col!=11 and row!=11; ++col, ++row, ++i)
             {
-                f[row][col] = bitboardPattern[i];
+                f[row][col] = bitboardPattern[10-i];
             }
             result[pattern][j] = mat2bb(f);
      }
@@ -694,7 +694,7 @@ int main()
     //cout << bb << endl;
     //cout << getBlockPattern(bb, 5) << endl;
     cout << "diagonal tests" << endl;
-    cout << DiagonalLAttack()[15][5] << endl;
+    cout << DiagonalLAttack()[17][20] << endl;
     return 0;
 }
 
