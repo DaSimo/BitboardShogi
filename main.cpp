@@ -666,9 +666,52 @@ std::array<std::array<BitBoard, 81>,128> genDiagonalPiFourthAttack() { // 81 ist
 return result;
 }
 
+// diagonalRankAttack
+std::array<std::array<BitBoard, 81>,128> genDiagonalMinusPiFourthAttack() { // 81 ist die Position der Figur (zweiter Index, einfach "durchzählen")
+    // 128 (erster Index) ist das Blockpattern der Zeile der Figur. Es entsteht indem man die 7er Zeile bitweise als Integer iinterpretiert, wobei 1= da steht eine Figur, 0 sonst.
+    // Wichtig: Das Blockpattern erhält man aus dem um pi/2 gedrehten Bitboard. Ein Beispiel:
+    //
+    std:: array<std::array<BitBoard, 81>,128> result;
+
+
+
+    for (int j = 0; j!=81;++j){  // die  position
+        for (int pattern=0; pattern!=128; ++pattern) {  // das Diagonal-Pattern
+            std::array<std::array<bool, 11>, 11> f;
+            std::fill(begin(f), end(f), std::array<bool, 11>{false, false, false, false, false, false, false, false, false, false, false});
+            auto bitboardPattern = int2row(pattern);
+            auto diagIdx = 8-min(j/9, j%9)+1;
+            // upper und lower sind der nächstgrößere bzw nächstkleinere besetzte index
+            auto upper = std::find(begin(bitboardPattern)+diagIdx+1, end(bitboardPattern), true);
+            auto lower = begin(bitboardPattern) + diagIdx;
+            while (lower!=begin(bitboardPattern)) {
+                --lower;
+                if (*lower == true) { break; }
+            }
+            std::fill(begin(bitboardPattern), end(bitboardPattern), false);  // alles false
+            std::fill(lower, upper+1, true);  // mittlerer teil ist jetzt true
+
+            // copy to diagonal
+            for (int col=min(8, j%9+j/9)+2, row=max(0, j/9-j%9), i=0 ; col!=-1 and row!=11; --col, ++row, ++i)
+            {
+                f[row][col] = bitboardPattern[10-i];
+            }
+            result[pattern][j] = mat2bb(f);
+     }
+    }
+
+
+return result;
+}
+
 
 std::array<std::array<BitBoard, 81>,128> const& DiagonalLAttack() {
     const static auto data = genDiagonalPiFourthAttack();
+    return data;
+}
+
+std::array<std::array<BitBoard, 81>,128> const& DiagonalRAttack() {
+    const static auto data = genDiagonalMinusPiFourthAttack();
     return data;
 }
 
@@ -694,7 +737,10 @@ int main()
     //cout << bb << endl;
     //cout << getBlockPattern(bb, 5) << endl;
     cout << "diagonal tests" << endl;
-    cout << DiagonalLAttack()[17][20] << endl;
+    cout << DiagonalLAttack()[9][20] << endl;
+    cout << DiagonalRAttack()[9][20] << endl;
+    cout << DiagonalLAttack()[1][3] << endl;
+    cout << DiagonalRAttack()[1][3] << endl;
     return 0;
 }
 
