@@ -1,8 +1,7 @@
 #include "game.h"
 
-Game::Game()
-{
-    Occupied=mat2bb({1,1,1,1,1,1,1,1,1,
+Game::Game() :
+    Occupied(mat2bb({1,1,1,1,1,1,1,1,1,
                     0,1,0,0,0,0,0,1,0,
                     1,1,1,1,1,1,1,1,1,
                     0,0,0,0,0,0,0,0,0,
@@ -11,8 +10,8 @@ Game::Game()
                     1,1,1,1,1,1,1,1,1,
                     0,1,0,0,0,0,0,1,0,
                     1,1,1,1,1,1,1,1,1
-    });
-    Occupied90=mat2bb({  1,0,1,0,0,0,1,0,1,
+    })),
+    Occupied90(mat2bb({  1,0,1,0,0,0,1,0,1,
                             1,1,1,0,0,0,1,1,1,
                             1,0,1,0,0,0,1,0,1,
                             1,0,1,0,0,0,1,0,1,
@@ -21,7 +20,15 @@ Game::Game()
                             1,0,1,0,0,0,1,0,1,
                             1,1,1,0,0,0,1,1,1,
                             1,0,1,0,0,0,1,0,1
-        });
+        })),
+
+
+
+    CapturedPieces{{0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0}},
+    move(1)
+{
+
+
 
     {
         std::array<int> temp={1,1,1,1,1,1,1,1,1,
@@ -47,7 +54,7 @@ Game::Game()
     }
 
 //todo wo steht schwarz und wo zieht er hin????????????
-    OccupiedBlack=mat2bb({1,1,1,1,1,1,1,1,1,
+    OccupiedBlack()=mat2bb({1,1,1,1,1,1,1,1,1,
                         0,1,0,0,0,0,0,1,0,
                         1,1,1,1,1,1,1,1,1,
                         0,0,0,0,0,0,0,0,0,
@@ -57,7 +64,8 @@ Game::Game()
                         0,0,0,0,0,0,0,0,0,
                         0,0,0,0,0,0,0,0,0
     });
-    OccupiedBlackPawn=mat2bb({0,0,0,0,0,0,0,0,0,
+
+    OccupiedBlackPawn()=mat2bb({0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             1,1,1,1,1,1,1,1,1,
                             0,0,0,0,0,0,0,0,0,
@@ -67,7 +75,7 @@ Game::Game()
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0
     });
-    OccupiedBlackKnight=mat2bb({0,1,0,0,0,0,0,1,0,
+    OccupiedBlackKnight()=mat2bb({0,1,0,0,0,0,0,1,0,
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0,
@@ -77,7 +85,7 @@ Game::Game()
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0
     });
-    OccupiedBlackLance=mat2bb({1,0,0,0,0,0,0,0,1,
+    OccupiedBlackLance()=mat2bb({1,0,0,0,0,0,0,0,1,
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0,
@@ -87,7 +95,7 @@ Game::Game()
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0
     });
-    OccupiedBlackSilver=mat2bb({0,0,1,0,0,0,1,0,0,
+    OccupiedBlackSilver()=mat2bb({0,0,1,0,0,0,1,0,0,
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0,
@@ -97,7 +105,7 @@ Game::Game()
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0
     });
-    OccupiedBlackGold=mat2bb({0,0,0,1,0,1,0,0,0,
+    OccupiedBlackGold()=mat2bb({0,0,0,1,0,1,0,0,0,
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0,
@@ -107,7 +115,7 @@ Game::Game()
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0
     });
-    OccupiedBlackBishop=mat2bb({0,0,0,0,0,0,0,0,0,
+    OccupiedBlackBishop()=mat2bb({0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,1,0,
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0,
@@ -117,7 +125,7 @@ Game::Game()
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0
     });
-    OccupiedBlackRook=mat2bb({   0,0,0,0,0,0,0,0,0,
+    OccupiedBlackRook()()=mat2bb({   0,0,0,0,0,0,0,0,0,
                                 0,1,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0,
@@ -127,7 +135,7 @@ Game::Game()
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0
     });
-    OccupiedBlackKing=mat2bb({   0,0,0,0,1,0,0,0,0,
+    OccupiedBlackKing()=mat2bb({   0,0,0,0,1,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,0,0,0,0,0,
@@ -140,14 +148,7 @@ Game::Game()
 
 
 
-
-
-
-
-
-
-
-    OccupiedWhite=mat2bb({0,0,0,0,0,0,0,0,0,
+    OccupiedWhite()=mat2bb({0,0,0,0,0,0,0,0,0,
                         0,0,0,0,0,0,0,0,0,
                         0,0,0,0,0,0,0,0,0,
                         0,0,0,0,0,0,0,0,0,
@@ -159,7 +160,7 @@ Game::Game()
     });
 
 
-    OccupiedWhitePawn=mat2bb({0,0,0,0,0,0,0,0,0,
+    OccupiedWhitePawn()=mat2bb({0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
@@ -169,7 +170,7 @@ Game::Game()
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0
     });
-    OccupiedWhiteKnight=mat2bb({0,0,0,0,0,0,0,0,0,
+    OccupiedWhiteKnight()=mat2bb({0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
@@ -179,7 +180,7 @@ Game::Game()
                             0,0,0,0,0,0,0,0,0,
                             0,1,0,0,0,0,0,1,0
     });
-    OccupiedWhiteLance=mat2bb({0,0,0,0,0,0,0,0,0,
+    OccupiedWhiteLance()=mat2bb({0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
@@ -189,7 +190,7 @@ Game::Game()
                             0,0,0,0,0,0,0,0,0,
                             1,0,0,0,0,0,0,0,1
     });
-    OccupiedWhiteSilver=mat2bb({0,0,0,0,0,0,0,0,0,
+    OccupiedWhiteSilver()=mat2bb({0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
@@ -200,7 +201,7 @@ Game::Game()
                             0,0,1,0,0,0,1,0,0
     });
 
-    OccupiedWhiteGold=mat2bb({0,0,0,0,0,0,0,0,0,
+    OccupiedWhiteGold()=mat2bb({0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
@@ -210,7 +211,7 @@ Game::Game()
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,1,0,1,0,0,0
     });
-    OccupiedWhiteBishop=mat2bb({0,0,0,0,0,0,0,0,0,
+    OccupiedWhiteBishop()=mat2bb({0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
@@ -220,7 +221,7 @@ Game::Game()
                             0,1,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0
     });
-    OccupiedWhiteRook=mat2bb({0,0,0,0,0,0,0,0,0,
+    OccupiedWhiteRook()=mat2bb({0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
@@ -230,7 +231,7 @@ Game::Game()
                             0,0,0,0,0,0,0,1,0,
                             0,0,0,0,0,0,0,0,0
     });
-    OccupiedWhiteKing=mat2bb({0,0,0,0,0,0,0,0,0,
+    OccupiedWhiteKing()=mat2bb({0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
                             0,0,0,0,0,0,0,0,0,
@@ -241,5 +242,22 @@ Game::Game()
                             0,0,0,0,1,0,0,0,0
     });
 
-
 }
+
+    int Game::index(int move_)
+    {
+        return (move_+1)/2;
+    }
+
+    void Game::MakeMove(int org, int dest, bool up) // org = Ursprungsfeld, Zahl von 0 bis 80; dest = Zielfeld, Zahl von 0 bis 80, up = Upgrade, true = befördern false = nicht befördern
+    {
+        Index = (move+1)/2;
+        if(OccupiedPieces[index(-move)][0] == 1)
+        {
+            //todo finde heraus welche figur geschlagen wird ändere die dazugehörigen Bitboards und füge die geschlagene Figur den CapturedPieces hinzu
+        }
+        Occupied[org/27][] //todo setBit benutzen
+
+
+        move = move*(-1);
+    }

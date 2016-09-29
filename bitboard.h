@@ -33,9 +33,11 @@ BitBoard operator ^(BitBoard const& rhs) const;
 BitBoard operator <<(int i) const;
 BitBoard operator >>(int i) const;
 std::ostream& print(std::ostream& out) const ;
+void setBit(int place, int bit);
 };
 
 // links, rechts oben und unten jeweils eins abschneiden
 BitBoard mat2bb(std::array<std::array<bool, 11>, 11> const& mat);
+BitBoard setBit(int place, int bit);
 std::ostream& operator <<(std::ostream& out, BitBoard const& b);
 #endif // BITBOARD_H

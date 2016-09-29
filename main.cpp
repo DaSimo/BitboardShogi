@@ -42,6 +42,9 @@ int main()
     cout << DiagonalMinusPiFourthAttack()[9][20] << endl;
     cout << DiagonalPiFourthAttack()[1][3] << endl;
     cout << DiagonalMinusPiFourthAttack()[1][3] << endl;
+    auto temp = DiagonalMinusPiFourthAttack()[1][3];
+    temp.setBit(11,1);
+    cout << temp << endl;
     return 0;
 }
 

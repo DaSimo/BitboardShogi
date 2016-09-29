@@ -87,6 +87,13 @@ BitBoard BitBoard::operator >>(int i) const {
     result[2] >>= 9;
     return result;
 }
+void BitBoard::setBit(int place, int bit)
+{
+    auto temp = (*this)[place/27];
+    (*this)[place/27] = (((*this)[place/27]>>(((place%27)+1))<<1)+bit)<<(place%27); // operator[]
+    temp = (temp<<(32-(place%27)))>>((32-(place%27)));
+    (*this)[place/27]+=temp;
+}
 
 std::ostream& operator <<(std::ostream& out, BitBoard const& b) { return b.print(out); }
 
