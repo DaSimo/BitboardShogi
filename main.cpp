@@ -7,7 +7,7 @@
 
 #include "bitboard.h"
 #include "MoveGeneration.h"
-
+#include "game.h"
 using namespace std;
 
 
@@ -43,8 +43,13 @@ int main()
     cout << DiagonalPiFourthAttack()[1][3] << endl;
     cout << DiagonalMinusPiFourthAttack()[1][3] << endl;
     auto temp = DiagonalMinusPiFourthAttack()[1][3];
-    temp.setBit(11,1);
-    cout << temp << endl;
+    temp.setBit(11, 1);
+    cout << temp.getBit(10) << endl;
+    Game Spiel;
+    Spiel.makeMove(80,71,0);
+    Spiel.makeMove(0,9,0);
+    cout << Spiel<<endl;
     return 0;
+
 }
 

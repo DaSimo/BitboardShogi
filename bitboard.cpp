@@ -90,14 +90,26 @@ BitBoard BitBoard::operator >>(int i) const {
 void BitBoard::setBit(int place, int bit)
 {
     auto temp = (*this)[place/27];
-    (*this)[place/27] = (((*this)[place/27]>>(((place%27)+1))<<1)+bit)<<(place%27); // operator[]
-    temp = (temp<<(32-(place%27)))>>((32-(place%27)));
+    (*this)[place/27] = ((((*this)[place/27]>>((place%27)+1))<<1)+bit)<<(place%27); // operator[]
+    temp = (temp<<1<<(31-(place%27)))>>((32-(place%27)));
     (*this)[place/27]+=temp;
+}
+bool BitBoard::getBit(int place)
+{
+    return ((*this)[place/27] >>(place%27))%2;
 }
 
 std::ostream& operator <<(std::ostream& out, BitBoard const& b) { return b.print(out); }
 
-
+BitBoard mat2bb(std::array<std::array<bool, 9>, 9> const& mat) {
+    BitBoard result;
+    for (size_t i=0; i!=9; ++i) {
+        for (size_t j=0; j!=9; ++j) {
+            result[(i)/3] += mat[i][j] * static_cast<uint32_t>(std::pow(2, j+ (i)*9 - 27*((i)/3)));
+        }
+    }
+    return result;
+}
 
 BitBoard mat2bb(std::array<std::array<bool, 11>, 11> const& mat) {
     BitBoard result;
@@ -105,6 +117,15 @@ BitBoard mat2bb(std::array<std::array<bool, 11>, 11> const& mat) {
         for (size_t j=1; j!=10; ++j) {
             result[(i-1)/3] += mat[i][j] * static_cast<uint32_t>(std::pow(2, j-1+ (i-1)*9 - 27*((i-1)/3)));
         }
+    }
+    return result;
+}
+
+BitBoard mat2bb(std::array<bool, 81> const& mat) {
+    BitBoard result;
+    for (size_t i_=0; i_!=81; ++i_) {
+        size_t i=i_/9, j =i_%9;
+        result[(i)/3] += mat[i_] * static_cast<uint32_t>(std::pow(2, j+ (i)*9 - 27*((i)/3)));
     }
     return result;
 }

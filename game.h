@@ -3,6 +3,7 @@
 #include "bitboard.h"
 #include"MoveGeneration.h"
 
+#include <iosfwd>
 
 class Game
 {
@@ -34,16 +35,20 @@ class Game
   BitBoard& OccupiedWhiteKing() { return OccupiedPieces[1][8]; }
 
 
-  std::array<std::array<int,9>,2> CapturedPieces; //Array enthält Anzahl an geschlagenen Figuren
+  std::array<std::array<int,7>,2> CapturedPieces; //Array enthält Anzahl an geschlagenen Figuren
   int move; //Movemarker 1= white; -1 = black
 
-
+  friend std::ostream & operator <<(std::ostream &, Game &);
 public:
     Game();
    // Ein Zug ist ein Tupel der Form (Ursprungsfeld,Ziehlfeld,Promotionsbit)
-    void MakeMove(int org, int dest , bool up);
+    void makeMove(int org, int dest , bool up);
     int index(int move_);
 
 };
+
+
+
+std::ostream & operator <<(std::ostream & out, Game & g);
 
 #endif // GAME_H
