@@ -89,6 +89,8 @@ inline std::array<BitBoard, 81> const& SKnight() {
     static const std::array<BitBoard, 81> data = genSKnight();
     return data;
 }
+
+
 std::array<bool, 11> int2row(int row);
 std::array<std::array<BitBoard, 81>,128> genRankAttack();
 std::array<std::array<BitBoard, 81>,128> const& RankAttack();
@@ -107,5 +109,8 @@ std::array<std::array<BitBoard, 81>,128> genDiagonalPiFourthAttack();
 std::array<std::array<BitBoard, 81>,128> genDiagonalMinusPiFourthAttack();
 std::array<std::array<BitBoard, 81>,128> const& DiagonalPiFourthAttack();
 std::array<std::array<BitBoard, 81>,128> const& DiagonalMinusPiFourthAttack();
+extern std::array<std::array<std::array<BitBoard,81>,8>,2> GeneratingBitBoards; // Zwei Farben mit je 6 Figuren mit je 81 Züge generierenden BitBoards
+extern std::array<std::array<std::array<BitBoard,81>,128>,4> GeneratingBitBoardsSliding; // Zwei Farben mit je 2 Figuren mit je 81 mal 128 Züge generierenden BitBoards für die "Sliding Pieces"
+
 
 #endif // MOVEGENERATION_H

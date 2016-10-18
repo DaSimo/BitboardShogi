@@ -186,45 +186,6 @@ std::array<BitBoard, 81> genSKnight() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*zahl in zeile umwandeln
 für jede mögliche zeile und position vom turm:
 zulässiges Zugpattern ausgeben. links und rechts wird jeweils eins abgezogen*/
@@ -580,3 +541,15 @@ std::array<std::array<BitBoard, 81>,128> const& DiagonalMinusPiFourthAttack() {
     const static auto data = genDiagonalMinusPiFourthAttack();
     return data;
 }
+
+//todo BitBoard Lanze
+std::array<std::array<std::array<BitBoard,81>,8>,2> GeneratingBitBoards ={
+    std::array<std::array<BitBoard,81>,8>{SPawn(), SKnight(),  SKnight(),SSilver(), SGGeneral(), SKnight(),  SKnight(), King()},
+    std::array<std::array<BitBoard,81>,8>{WPawn(), WKnight(), SKnight(), WSilver(), WGGeneral(), SKnight(), SKnight(), King()}
+};
+std::array<std::array<std::array<BitBoard,81>,128>,4> GeneratingBitBoardsSliding={
+    std::array<std::array<BitBoard,81>,128>(RankAttack()),
+    std::array<std::array<BitBoard,81>,128>(FileAttack()),
+    std::array<std::array<BitBoard,81>,128>(DiagonalPiFourthAttack()),
+    std::array<std::array<BitBoard,81>,128>(DiagonalMinusPiFourthAttack())
+};

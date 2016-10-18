@@ -46,8 +46,8 @@ int main()
     temp.setBit(11, 1);
     cout << temp.getBit(10) << endl;
     Game Spiel;
-    Spiel.makeMove(80,71,0);
-    Spiel.makeMove(0,9,0);
+    Spiel.makeMove(80,8,1);
+    Spiel.makeMove(0,72,0);
     cout << Spiel<<endl;
     return 0;
 

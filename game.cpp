@@ -54,17 +54,41 @@ move(1)
 
     }
 
-    //todo wo steht schwarz und wo zieht er hin????????????
-    OccupiedBlack()=mat2bb({1,1,1,1,1,1,1,1,1,
-                           0,1,0,0,0,0,0,1,0,
-                           1,1,1,1,1,1,1,1,1,
-                           0,0,0,0,0,0,0,0,0,
-                           0,0,0,0,0,0,0,0,0,
-                           0,0,0,0,0,0,0,0,0,
-                           0,0,0,0,0,0,0,0,0,
-                           0,0,0,0,0,0,0,0,0,
-                           0,0,0,0,0,0,0,0,0
+
+    for (int i=9;i!=16;++i){
+        OccupiedPieces[0][i]=mat2bb({0,0,0,0,0,0,0,0,0,
+                                    0,0,0,0,0,0,0,0,0,
+                                    0,0,0,0,0,0,0,0,0,
+                                    0,0,0,0,0,0,0,0,0,
+                                    0,0,0,0,0,0,0,0,0,
+                                    0,0,0,0,0,0,0,0,0,
+                                    0,0,0,0,0,0,0,0,0,
+                                    0,0,0,0,0,0,0,0,0,
+                                    0,0,0,0,0,0,0,0,0
+    });
+    OccupiedPieces[1][i]=mat2bb({0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0
 });
+}
+
+//todo wo steht schwarz und wo zieht er hin????????????
+OccupiedBlack()=mat2bb({1,1,1,1,1,1,1,1,1,
+                       0,1,0,0,0,0,0,1,0,
+                       1,1,1,1,1,1,1,1,1,
+                       0,0,0,0,0,0,0,0,0,
+                       0,0,0,0,0,0,0,0,0,
+                       0,0,0,0,0,0,0,0,0,
+                       0,0,0,0,0,0,0,0,0,
+                       0,0,0,0,0,0,0,0,0,
+                       0,0,0,0,0,0,0,0,0
+                       });
 
 OccupiedBlackPawn()=mat2bb({0,0,0,0,0,0,0,0,0,
                            0,0,0,0,0,0,0,0,0,
@@ -262,12 +286,17 @@ void Game::makeMove(int org, int dest, bool up) // org = Ursprungsfeld, Zahl von
             if( OccupiedPieces[index(-move)][i].getBit(dest)==1)
             {
                 OccupiedPieces[index(-move)][i].setBit(dest,0);
-                CapturedPieces[index(move)][i-1];
+                CapturedPieces[index(move)][i-1]++;
+                break;
+            }
+            if( OccupiedPieces[index(-move)][i+8].getBit(dest)==1)
+            {
+                OccupiedPieces[index(-move)][i+8].setBit(dest,0);
+                CapturedPieces[index(move)][i-1]++;
                 break;
             }
 
         }
-        //todo finde heraus welche figur geschlagen wird ändere die dazugehörigen Bitboards und füge die geschlagene Figur den CapturedPieces hinzu
     }
     Occupied.setBit(org,0);
     Occupied.setBit(dest,1);
@@ -279,27 +308,49 @@ void Game::makeMove(int org, int dest, bool up) // org = Ursprungsfeld, Zahl von
     Occupied_45.setBit(turnMinusPiFourth(dest),1);
     Occupied90.setBit(turnPiHalf(org),0);
     Occupied90.setBit(turnPiHalf(dest),1);
-    std::cout<<OccupiedPieces[index(move)][3].getBit(0)<<std::endl;
-    for (int i = 1;i!=9;++i)
+    for (int i = 1;i!=16;++i)
     {
-
         if( OccupiedPieces[index(move)][i].getBit(org)==1)
         {
-            std::cout<<"Lanze " << i<<std::endl;
             OccupiedPieces[index(move)][i].setBit(org,0);
+            if(up)
+            OccupiedPieces[index(move)][i+8].setBit(dest,1);
+            else
             OccupiedPieces[index(move)][i].setBit(dest,1);
             break;
         }
     }
-
+    //todo befördern überprüfen?
     move = -move;
 }
+BitBoard Game::getMove(int org, int piece, int move){
+    switch (piece){
+    case 2:
+        return GeneratingBitBoardsSliding[1][org][getBlockPattern(Occupied90, org)]; //todo mit Lanzen BitBoard kombinieren
+    case 5:
+        return (GeneratingBitBoardsSliding[1][org][getBlockPattern(Occupied90, org)]|GeneratingBitBoardsSliding[0][org][getBlockPattern(Occupied, org)]);
+    case 6:
+        return (GeneratingBitBoardsSliding[2][org][getBlockPatternPiFourth(Occupied45, org)]|GeneratingBitBoardsSliding[3][org][getBlockPatternMinusPiFourth(Occupied_45, org)]);
+    default:
+        return GeneratingBitBoards[move][piece][org];
+    }
+}
+
 std::ostream & operator <<(std::ostream & out, Game & g){
-    std::array<std::array<int, 9>, 9> mat{};
+    std::array<std::array<int, 9>, 9> mat = {0,0,0,0,0,0,0,0,0,
+                                             0,0,0,0,0,0,0,0,0,
+                                             0,0,0,0,0,0,0,0,0,
+                                             0,0,0,0,0,0,0,0,0,
+                                             0,0,0,0,0,0,0,0,0,
+                                             0,0,0,0,0,0,0,0,0,
+                                             0,0,0,0,0,0,0,0,0,
+                                             0,0,0,0,0,0,0,0,0,
+                                             0,0,0,0,0,0,0,0,0
+                                            };
 
     for (int j=0;j!=81;++j)
     {
-        for (int i = 1; i!= 9; ++i)
+        for (int i = 1; i!= 16; ++i)
         {
             auto black= g.OccupiedPieces[0][i].getBit(j);
             auto white= g.OccupiedPieces[1][i].getBit(j);
@@ -319,5 +370,19 @@ std::ostream & operator <<(std::ostream & out, Game & g){
         out << std::endl;
     }
     out<<std::endl;
+    int i = 0;
+    out << "Captured Pieces:"<<std::endl;
+    for (auto const& player : g.CapturedPieces) {  // gleichbedeutend mit auto it1=begin(g...); it2=end(g...); for (; it1!=it2; ++it1) { player = *it1; ... }
+        if(i==0)
+        out << "Schwarz"<<std::endl;
+        else
+            out << "Weiß"<<std::endl;
+        ++i;
+        for (auto n : player) {
+            out << n << " ";
+        }
+        out << std::endl;
+    }
+
     return out;
 }
