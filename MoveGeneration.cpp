@@ -184,6 +184,55 @@ std::array<BitBoard, 81> genSKnight() {
 }
 
 
+std::array<BitBoard, 9> genWLance() {
+    std::array<BitBoard, 9> result;
+
+    std::array<std::array<bool, 11>, 11> result1;
+
+
+    for (size_t i=0; i!=9; ++i) {
+        for (auto &result11 : result1) {
+            std::fill(begin(result11), end(result11), false);  // initialisieren mit 0 (false)
+        }
+
+        for(size_t j=i+1;j!=10;++j){
+            for(size_t l=1;l!=10;++l){
+            result[j][l]=1;
+            }
+        }
+
+        result[i]=mat2bb(result1);
+
+
+    }
+    return result;
+}
+
+
+
+std::array<BitBoard, 9> genSLance() {
+    std::array<BitBoard, 9> result;
+
+    std::array<std::array<bool, 11>, 11> result1;
+
+
+    for (size_t i=0; i!=9; ++i) {
+        for (auto &result11 : result1) {
+            std::fill(begin(result11), end(result11), true);  // initialisieren mit 0 (false)
+        }
+        for(size_t j=i+1;j!=10;++j){
+            for(size_t l=1;l!=10;++l){
+            result[j][l]=0;
+            }
+        }
+
+        result[i]=mat2bb(result1);
+    }
+    return result;
+}
+
+
+
 
 
 /*zahl in zeile umwandeln
@@ -277,14 +326,14 @@ std::array<std::array<BitBoard, 81>,128> genFileAttack() { // 81 ist die Positio
 
 
     for (int j = 0; j!=81;++j){
-//        auto currentRow = j/9;
+        auto currentRow = j/9;
         auto currentCol = j%9;
         for (int pattern=0; pattern!=128; ++pattern) {
             std::array<std::array<bool, 11>, 11> f;
             std::fill(begin(f), end(f), std::array<bool, 11>{false, false, false, false, false, false, false, false, false, false, false});
             auto bitboardPattern = int2row(pattern);
-          auto upper = std::find(begin(bitboardPattern)+currentCol+1, end(bitboardPattern), true);
-          auto lower = begin(bitboardPattern) + currentCol;
+          auto upper = std::find(begin(bitboardPattern)+currentRow+2, end(bitboardPattern), true);
+          auto lower = begin(bitboardPattern) + currentRow+1;
           while (lower!=begin(bitboardPattern)) {
               --lower;
               if (*lower == true) { break; }
@@ -543,6 +592,10 @@ std::array<std::array<BitBoard, 81>,128> const& DiagonalMinusPiFourthAttack() {
 }
 
 //todo BitBoard Lanze
+std::array<std::array<BitBoard,9>,2> Lance = {
+    {SLance(),WLance()}
+};
+
 std::array<std::array<std::array<BitBoard,81>,8>,2> GeneratingBitBoards ={
     std::array<std::array<BitBoard,81>,8>{SPawn(), SKnight(),  SKnight(),SSilver(), SGGeneral(), SKnight(),  SKnight(), King()},
     std::array<std::array<BitBoard,81>,8>{WPawn(), WKnight(), SKnight(), WSilver(), WGGeneral(), SKnight(), SKnight(), King()}
@@ -552,4 +605,5 @@ std::array<std::array<std::array<BitBoard,81>,128>,4> GeneratingBitBoardsSliding
     std::array<std::array<BitBoard,81>,128>(FileAttack()),
     std::array<std::array<BitBoard,81>,128>(DiagonalPiFourthAttack()),
     std::array<std::array<BitBoard,81>,128>(DiagonalMinusPiFourthAttack())
+
 };

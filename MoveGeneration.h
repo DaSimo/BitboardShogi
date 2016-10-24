@@ -90,11 +90,29 @@ inline std::array<BitBoard, 81> const& SKnight() {
     return data;
 }
 
+// knight von oben nach unten(schwarz)-------------------------------------------------------------------------------------
+std::array<BitBoard, 9> genSLance();
+
+inline std::array<BitBoard, 9> const& SLance() {
+    static const std::array<BitBoard,9> data = genSLance();
+    return data;
+}
+
+// knight von oben nach unten(schwarz)-------------------------------------------------------------------------------------
+std::array<BitBoard, 9> genWLance();
+
+inline std::array<BitBoard, 9> const& WLance() {
+    static const std::array<BitBoard,9> data = genWLance();
+    return data;
+}
+
+
+
 
 std::array<bool, 11> int2row(int row);
 std::array<std::array<BitBoard, 81>,128> genRankAttack();
 std::array<std::array<BitBoard, 81>,128> const& RankAttack();
-int getBlockPattern(BitBoard const& bb, size_t idx);
+extern int getBlockPattern(BitBoard const& bb, size_t idx);
 size_t turnPiHalf(size_t idx);
 std::array<std::array<BitBoard, 81>,128> genFileAttack();
 std::array<std::array<BitBoard, 81>,128> const& FileAttack();
@@ -111,6 +129,6 @@ std::array<std::array<BitBoard, 81>,128> const& DiagonalPiFourthAttack();
 std::array<std::array<BitBoard, 81>,128> const& DiagonalMinusPiFourthAttack();
 extern std::array<std::array<std::array<BitBoard,81>,8>,2> GeneratingBitBoards; // Zwei Farben mit je 6 Figuren mit je 81 Züge generierenden BitBoards
 extern std::array<std::array<std::array<BitBoard,81>,128>,4> GeneratingBitBoardsSliding; // Zwei Farben mit je 2 Figuren mit je 81 mal 128 Züge generierenden BitBoards für die "Sliding Pieces"
-
+extern std::array<std::array<BitBoard,9>,2> Lance;
 
 #endif // MOVEGENERATION_H

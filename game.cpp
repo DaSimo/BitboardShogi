@@ -323,16 +323,16 @@ void Game::makeMove(int org, int dest, bool up) // org = Ursprungsfeld, Zahl von
     //todo befördern überprüfen?
     move = -move;
 }
-BitBoard Game::getMove(int org, int piece, int move){
+BitBoard Game::getMove(int org, int piece, int move){ //todo funktion so schreiben, dass man mögliche Züge einer Figur auch auf Felder anwenden kann auf der besagte Fugir nicht steht.
     switch (piece){
-    case 2:
-        return GeneratingBitBoardsSliding[1][org][getBlockPattern(Occupied90, org)]; //todo mit Lanzen BitBoard kombinieren
-    case 5:
-        return (GeneratingBitBoardsSliding[1][org][getBlockPattern(Occupied90, org)]|GeneratingBitBoardsSliding[0][org][getBlockPattern(Occupied, org)]);
-    case 6:
+    case 2: //Lanze
+        return GeneratingBitBoardsSliding[1][org][getBlockPattern(Occupied90, org)]&Lance[index(move)][org/9]; //todo mit Lanzen BitBoard kombinieren
+    case 5: //Turm
+        return (GeneratingBitBoardsSliding[1][org][getBlockPattern(Occupied90, org)]);//|GeneratingBitBoardsSliding[0][org][getBlockPattern(Occupied, org)]);
+    case 6: //Läufer
         return (GeneratingBitBoardsSliding[2][org][getBlockPatternPiFourth(Occupied45, org)]|GeneratingBitBoardsSliding[3][org][getBlockPatternMinusPiFourth(Occupied_45, org)]);
-    default:
-        return GeneratingBitBoards[move][piece][org];
+    default: //non-sliding pieces
+        return GeneratingBitBoards[index(move)][piece][org]&(~(OccupiedPieces[index(move)][0]));
     }
 }
 
@@ -365,7 +365,7 @@ std::ostream & operator <<(std::ostream & out, Game & g){
     {
         for (int j=0;j!=9;++j)
         {
-            out  << std::setw(4)<< mat[i][j];
+            out  << std::setw(4)<< mat[8-i][8-j];
         }
         out << std::endl;
     }

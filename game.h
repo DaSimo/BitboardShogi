@@ -7,6 +7,7 @@
 
 class Game
 {
+    public:
   BitBoard Occupied;
   BitBoard Occupied90;
   BitBoard Occupied45;
@@ -55,7 +56,7 @@ class Game
   int move; //Movemarker 1= white; -1 = black
 
   friend std::ostream & operator <<(std::ostream &, Game &);
-public:
+//public
     Game();
    // Ein Zug ist ein Tupel der Form (Ursprungsfeld,Ziehlfeld,Promotionsbit)
     void makeMove(int org, int dest , bool up);
