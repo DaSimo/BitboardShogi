@@ -326,11 +326,12 @@ void Game::makeMove(int org, int dest, bool up) // org = Ursprungsfeld, Zahl von
 BitBoard Game::getMove(int org, int piece, int move){ //todo funktion so schreiben, dass man mögliche Züge einer Figur auch auf Felder anwenden kann auf der besagte Fugir nicht steht.
     switch (piece){
     case 2: //Lanze
-        return GeneratingBitBoardsSliding[1][org][getBlockPattern(Occupied90, org)]&Lance[index(move)][org/9]; //todo mit Lanzen BitBoard kombinieren
+        std::cout << Lance[index(move)][org/9] << std::endl;
+        return GeneratingBitBoardsSliding[1][getBlockPattern(Occupied90, org)][org]&Lance[index(move)][org/9]; //todo mit Lanzen BitBoard kombinieren
     case 5: //Turm
-        return (GeneratingBitBoardsSliding[1][org][getBlockPattern(Occupied90, org)]);//|GeneratingBitBoardsSliding[0][org][getBlockPattern(Occupied, org)]);
+        return (GeneratingBitBoardsSliding[1][getBlockPattern(Occupied90, org)][org]);//|GeneratingBitBoardsSliding[0][org][getBlockPattern(Occupied, org)]);
     case 6: //Läufer
-        return (GeneratingBitBoardsSliding[2][org][getBlockPatternPiFourth(Occupied45, org)]|GeneratingBitBoardsSliding[3][org][getBlockPatternMinusPiFourth(Occupied_45, org)]);
+        return (GeneratingBitBoardsSliding[2][getBlockPatternPiFourth(Occupied45, org)][org]|GeneratingBitBoardsSliding[3][getBlockPatternMinusPiFourth(Occupied_45, org)][org]);
     default: //non-sliding pieces
         return GeneratingBitBoards[index(move)][piece][org]&(~(OccupiedPieces[index(move)][0]));
     }
