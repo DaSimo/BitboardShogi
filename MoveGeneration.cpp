@@ -194,17 +194,17 @@ std::array<BitBoard, 9> genWLance() {
         for (auto &result11 : result1) {
             std::fill(begin(result11), end(result11), false);  // initialisieren mit 0 (false)
         }
-
-        for(size_t j=i+1;j!=10;++j){
+        for(size_t j=i+2;j!=10;++j){
             for(size_t l=1;l!=10;++l){
-            result[j][l]=1;
+                result1[j][l]=1;
             }
         }
 
-        result[i]=mat2bb(result1);
-
-
+    result[i]=mat2bb(result1);
     }
+
+
+
     return result;
 }
 
@@ -216,18 +216,20 @@ std::array<BitBoard, 9> genSLance() {
     std::array<std::array<bool, 11>, 11> result1;
 
 
+
     for (size_t i=0; i!=9; ++i) {
         for (auto &result11 : result1) {
-            std::fill(begin(result11), end(result11), true);  // initialisieren mit 0 (false)
+            std::fill(begin(result11), end(result11), true);  // initialisieren mit 1 (true)
         }
         for(size_t j=i+1;j!=10;++j){
             for(size_t l=1;l!=10;++l){
-            result[j][l]=0;
+                result1[j][l]=0;
             }
         }
 
         result[i]=mat2bb(result1);
     }
+
     return result;
 }
 
