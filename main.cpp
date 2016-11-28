@@ -46,13 +46,15 @@ int main()
     temp.setBit(11, 1);
     cout << temp.getBit(10) << endl;
     Game Spiel;
-    Spiel.makeMove(80,40,1);
+    Spiel.makeMove(80,42,1);
     //Spiel.makeMove(0,72,0);
     cout << Spiel<<endl;
-    cout << Spiel.getMove(40,5,1)<<endl;
+    cout << Spiel.getMove(42,6,-1)<<endl;
     for (size_t i=0;i!=11;++i){
-        cout <<int2row(getBlockPattern(Spiel.Occupied90,40))[i];
+        cout <<int2row(getBlockPatternMinusPiFourth(Spiel.Occupied_45,42))[i];
     }
+    cout<<endl<< getBlockPatternMinusPiFourth(Spiel.Occupied_45,42);
+    cout <<endl<<Spiel.Occupied_45;
    cout <<endl;
 
 

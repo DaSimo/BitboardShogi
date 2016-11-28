@@ -1,4 +1,5 @@
 #include "MoveGeneration.h"
+#include "util.h"
 
 #include <algorithm>
 
@@ -264,8 +265,8 @@ std::array<std::array<BitBoard, 81>,128> genRankAttack() { // 81 ist die Positio
             std::array<std::array<bool, 11>, 11> f;
             std::fill(begin(f), end(f), std::array<bool, 11>{false, false, false, false, false, false, false, false, false, false, false});
             auto bitboardPattern = int2row(pattern);
-          auto upper = std::find(begin(bitboardPattern)+currentCol+1, end(bitboardPattern), true);
-          auto lower = begin(bitboardPattern) + currentCol;
+          auto upper = std::find(begin(bitboardPattern)+currentCol+2, end(bitboardPattern), true);
+          auto lower = begin(bitboardPattern) + currentCol+1;
           while (lower!=begin(bitboardPattern)) {
               --lower;
               if (*lower == true) { break; }
@@ -345,7 +346,7 @@ std::array<std::array<BitBoard, 81>,128> genFileAttack() { // 81 ist die Positio
 
             for (int i = 0 ; i!=11; ++i) // Hier drehen wir im Endeffekt zurück.
             {
-                f[i][currentCol+1] = bitboardPattern[10-i];
+                f[i][currentCol+1] = bitboardPattern[i];
             }
             result[pattern][j] = mat2bb(f);
      }
@@ -376,60 +377,60 @@ size_t turnMinusPiFourth(size_t idx) {  // Dieses Array beantwortet im wesentlic
     // Diese ist auf Position 5. Dies sagt folgendes aus: Feld zwei wird durch Drehung auf Feld 5 abgebildet.
 
 
-   static const  std::array<size_t,81>impl={0,2,5,9,14,20,27,35,44,
-                               1,4,8,13,19,26,34,43,52,
-                               3,7,12,18,25,33,42,51,59,
-                               6,11,17,24,32,41,50,58,65,
-                               10,16,23,31,40,49,57,64,70,
-                               15,22,30,39,48,56,63,69,74,
-                               21,29,38,47,55,62,68,73,77,
-                               28,37,46,54,61,67,72,76,79,
-                               36,45,53,60,66,71,75,78,80
+//   static const  std::array<size_t,81>impl={0,2,5,9,14,20,27,35,44,
+//                               1,4,8,13,19,26,34,43,52,
+//                               3,7,12,18,25,33,42,51,59,
+//                               6,11,17,24,32,41,50,58,65,
+//                               10,16,23,31,40,49,57,64,70,
+//                               15,22,30,39,48,56,63,69,74,
+//                               21,29,38,47,55,62,68,73,77,
+//                               28,37,46,54,61,67,72,76,79,
+//                               36,45,53,60,66,71,75,78,80
 
-    };
+//    };
 
 
-//     std::array<size_t, 81> impltemp =  { 0,9,1,18,10,2,27,19,11,   man sieht hier, dass die Diagonalen von oben nach unten durchlaufen werden
-//                                          3,36,28,20,12,4,45,37,29,
-//                                          21,13,5,54,46,38,30,22,14,
-//                                          6,63,55,47,39,31,23,15,7,
-//                                          72,64,56,48,40,32,24,16,8,
-//                                          73,65,57,49,41,33,25,17,74,
-//                                          66,58, 50,42,34,26,75,67,59,
-//                                          51,43,35,76,68,60,52,44,77,
-//                                          69,61,53,78,70,62,79,71,80
-//                                         };
+     std::array<size_t, 81> impl =  { 0,9,1,18,10,2,27,19,11,   //man sieht hier, dass die Diagonalen von oben nach unten durchlaufen werden
+                                          3,36,28,20,12,4,45,37,29,
+                                          21,13,5,54,46,38,30,22,14,
+                                          6,63,55,47,39,31,23,15,7,
+                                          72,64,56,48,40,32,24,16,8,
+                                          73,65,57,49,41,33,25,17,74,
+                                          66,58, 50,42,34,26,75,67,59,
+                                          51,43,35,76,68,60,52,44,77,
+                                          69,61,53,78,70,62,79,71,80
+                                         };
     return impl[idx];
 }
 
 
 size_t turnPiFourth(size_t idx) {  // drehe index (bzw. entsprechende figur) um 45° im Gegenuhrzeigersinn, 0 ursprünglich entspricht rechts unten.
-     static const std::array<size_t, 81> impl={36,28,21,15,10,6,3,1,0,
-                                                45,37,29,22,16,11,7,4,2,
-                                                53,46,38,30,23,17,12,8,5,
-                                                60,54,47,39,31,24,18,13,9,
-                                                66,61,55,48,40,32,25,19,14,
-                                                71,67,62,56,49,41,33,26,20,
-                                                75,72,68,63,57,50,42,34,27,
-                                                78,76,73,69,64,58,51,43,35,
-                                                80,79,77,74,70,65,59,52,44
-     };
+//     static const std::array<size_t, 81> impl={36,28,21,15,10,6,3,1,0,
+//                                                45,37,29,22,16,11,7,4,2,
+//                                                53,46,38,30,23,17,12,8,5,
+//                                                60,54,47,39,31,24,18,13,9,
+//                                                66,61,55,48,40,32,25,19,14,
+//                                                71,67,62,56,49,41,33,26,20,
+//                                                75,72,68,63,57,50,42,34,27,
+//                                                78,76,73,69,64,58,51,43,35,
+//                                                80,79,77,74,70,65,59,52,44
+//     };
 
 
-//    static const std::array<size_t, 81> impltemp = { 8,7,17,6,16,26,5,15,25,
-//                                                     35,4,14,24,34,44,3,13,23,33,43,53,
-//                                                    2,12,22,32,42,52,62,
-//                                                    1,11,21,31,41,51,61,71,
-//                                                    0,10,20,30,40,50,60,70,80,
-//                                                    9,19,29,39,49,59,69,79,
-//                                                    18,28,38,48,58,68,78,
-//                                                    27,37,47,57,67,77,
-//                                                    36,46,56,66,76,
-//                                                    45,55,65,75,
-//                                                    54,64,74,
-//                                                    63,73,
-//                                                    72
-//                                         };
+    static const std::array<size_t, 81> impl = { 8,7,17,6,16,26,5,15,25,
+                                                     35,4,14,24,34,44,3,13,23,33,43,53,
+                                                    2,12,22,32,42,52,62,
+                                                    1,11,21,31,41,51,61,71,
+                                                    0,10,20,30,40,50,60,70,80,
+                                                    9,19,29,39,49,59,69,79,
+                                                    18,28,38,48,58,68,78,
+                                                    27,37,47,57,67,77,
+                                                    36,46,56,66,76,
+                                                    45,55,65,75,
+                                                    54,64,74,
+                                                    63,73,
+                                                    72
+                                         };
 
 //    for(int j=0;j!=81;++j)
 //    {
@@ -523,19 +524,26 @@ std::array<std::array<BitBoard, 81>,128> genDiagonalPiFourthAttack() { // 81 ist
             auto diagIdx = 8-min(j/9, j%9)+1;
             // upper und lower sind der nächstgrößere bzw nächstkleinere besetzte index
             auto upper = std::find(begin(bitboardPattern)+diagIdx+1, end(bitboardPattern), true);
-            auto lower = begin(bitboardPattern) + diagIdx;
+            auto lower = begin(bitboardPattern) + diagIdx+0;
             while (lower!=begin(bitboardPattern)) {
                 --lower;
                 if (*lower == true) { break; }
             }
+
             std::fill(begin(bitboardPattern), end(bitboardPattern), false);  // alles false
             std::fill(lower, upper+1, true);  // mittlerer teil ist jetzt true
-
+            //if((j==40)&(pattern==35))
+            //std::cout<<bitboardPattern << std::endl;
             // copy to diagonal
             for (int col=max(0, j%9-j/9), row=max(0, j/9-j%9), i=0 ; col!=11 and row!=11; ++col, ++row, ++i)
             {
-                f[row][col] = bitboardPattern[10-i];
+                f[row][col] = bitboardPattern[i];
             }
+            if((j==40)&(pattern==17)){
+                std::cout<< "col: " <<max(0, j%9-j/9)<<", row: " << max(0, j/9-j%9)<<std::endl;
+            std::cout <<"pattern " << bitboardPattern<< ", int2row " << int2row(pattern)<<std::endl;
+            std::cout<< "f "<<f << std::endl;
+            std::cout << "bitboard f "<<std::endl<<mat2bb(f)<<std::endl; }
             result[pattern][j] = mat2bb(f);
      }
     }
@@ -561,7 +569,7 @@ std::array<std::array<BitBoard, 81>,128> genDiagonalMinusPiFourthAttack() { // 8
             auto diagIdx = 8-min(j/9, j%9)+1;
             // upper und lower sind der nächstgrößere bzw nächstkleinere besetzte index
             auto upper = std::find(begin(bitboardPattern)+diagIdx+1, end(bitboardPattern), true);
-            auto lower = begin(bitboardPattern) + diagIdx;
+            auto lower = begin(bitboardPattern) + diagIdx+0;
             while (lower!=begin(bitboardPattern)) {
                 --lower;
                 if (*lower == true) { break; }
@@ -570,10 +578,15 @@ std::array<std::array<BitBoard, 81>,128> genDiagonalMinusPiFourthAttack() { // 8
             std::fill(lower, upper+1, true);  // mittlerer teil ist jetzt true
 
             // copy to diagonal
-            for (int col=min(8, j%9+j/9)+2, row=max(0, j/9-j%9), i=0 ; col!=-1 and row!=11; --col, ++row, ++i)
+            for (int col=min(8, (j%9)+(j/9))+1, row=max(0, (j/9)-(j%9)), i=0 ; col!=-1 and row!=11; --col, ++row, ++i)
             {
-                f[row][col] = bitboardPattern[10-i];
+                f[row][col] = bitboardPattern[i];
             }
+            if((j==40)&(pattern==17)){
+                 std::cout<< "col: " <<min(8, (j%9)+(j/9))+1<<", row: " << max(0, j/9-j%9)<<std::endl;
+                std::cout <<"pattern _45" << bitboardPattern<< ", int2row " << int2row(pattern)<<std::endl;
+            std::cout<< "f "<<f << std::endl;
+            std::cout << "bitboard f "<<std::endl<<mat2bb(f)<<std::endl; }
             result[pattern][j] = mat2bb(f);
      }
     }

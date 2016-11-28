@@ -1,5 +1,6 @@
 #include "game.h"
 #include <iomanip>
+#include "util.h"
 
 Game::Game() :
     Occupied(mat2bb({1,1,1,1,1,1,1,1,1,
@@ -42,13 +43,15 @@ move(1)
                               0,1,0,0,0,0,0,1,0,
                               1,1,1,1,1,1,1,1,1
                              };
+        std::cout<<"Temp "<<temp<<std::endl;
         std::array<int, 81> temp45=temp;
         std::array<int, 81> temp_45=temp;
         for (int i=0;i<81;++i)
         {
-            temp45[i]=turnPiFourth(temp[i]);
-            temp_45[i] =turnMinusPiFourth(temp[i]);
+            temp45[i]=temp[turnPiFourth(i)];
+            temp_45[i] =temp[turnMinusPiFourth(i)];
         }
+        std::cout<<"Temp_45 "<<temp45<<std::endl;
         Occupied45=mat2bb(temp45);
         Occupied_45=mat2bb(temp_45);
 
@@ -329,7 +332,7 @@ BitBoard Game::getMove(int org, int piece, int move){ //todo funktion so schreib
         std::cout << Lance[index(move)][org/9] << std::endl;
         return GeneratingBitBoardsSliding[1][getBlockPattern(Occupied90, org)][org]&Lance[index(move)][org/9]; //todo mit Lanzen BitBoard kombinieren
     case 5: //Turm
-        return (GeneratingBitBoardsSliding[1][getBlockPattern(Occupied90, org)][org]);//|GeneratingBitBoardsSliding[0][org][getBlockPattern(Occupied, org)]);
+        return (GeneratingBitBoardsSliding[1][getBlockPattern(Occupied90, org)][org]|GeneratingBitBoardsSliding[0][getBlockPattern(Occupied, org)][org]);
     case 6: //Läufer
         return (GeneratingBitBoardsSliding[2][getBlockPatternPiFourth(Occupied45, org)][org]|GeneratingBitBoardsSliding[3][getBlockPatternMinusPiFourth(Occupied_45, org)][org]);
     default: //non-sliding pieces
