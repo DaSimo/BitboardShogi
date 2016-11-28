@@ -12,6 +12,7 @@
 class BitBoard {
     uint32_t bb[3];
 public:
+    friend int main();
     BitBoard() : bb{0, 0, 0} {}
 uint32_t& operator [](size_t i) { return bb[i]; }
 uint32_t const& operator [](size_t i) const { return bb[i]; }

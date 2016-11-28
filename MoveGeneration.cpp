@@ -443,15 +443,27 @@ size_t turnPiFourth(size_t idx) {  // drehe index (bzw. entsprechende figur) um 
 // verkürzte Diagonalen müssen nicht aufgefüllt werden!
 
 size_t getRightShift(size_t idx) {  // Zum Diagonalen Auslesen
-    static const std::array<size_t, 81> impl = {27,25,25,22,22,22,18,18,18,
-                                                18,13,13,13,13,13,7,7,7,
-                                                7,7,7,1,1,1,1,1,1,
-                                                1,19,19,19,19,19,19,19,19,
-                                                10,10,10,10,10,10,10,10,10,
-                                                2,2,2,2,2,2,2,2,22,
-                                                22,22,22,22,22,22,16,16,16,
-                                                16,16,16,11,11,11,11,11,7,
-                                                7,7,7,4,4,4,2,2,0
+//    static const std::array<size_t, 81> impl = {27,25,25,22,22,22,18,18,18,
+//                                                18,13,13,13,13,13,7,7,7,
+//                                                7,7,7,1,1,1,1,1,1,
+//                                                1,19,19,19,19,19,19,19,19,
+//                                                10,10,10,10,10,10,10,10,10,
+//                                                2,2,2,2,2,2,2,2,22,
+//                                                22,22,22,22,22,22,16,16,16,
+//                                                16,16,16,11,11,11,11,11,7,
+//                                                7,7,7,4,4,4,2,2,0
+
+//                                         };
+
+    static const std::array<size_t, 81> impl = {26, 24, 24, 21, 21, 21, 17, 17, 17,
+                                                17, 12, 12, 12, 12, 12,  6,  6,  6,
+                                                6,  6,  6,  0,  0,  0,  0,  0,  0,
+                                                0, 18, 18, 18, 18, 18, 18, 18, 18,
+                                                9,  9,  9,  9,  9,  9,  9,  9,  9,
+                                                1,  1,  1,  1,  1,  1,  1,  1, 21,
+                                                21, 21, 21, 21, 21, 21, 15, 15, 15,
+                                                15, 15, 15, 10, 10, 10, 10, 10,  6,
+                                                6,  6,  6,  3,  3,  3,  1,  1,  0
 
                                          };
 
@@ -459,16 +471,27 @@ size_t getRightShift(size_t idx) {  // Zum Diagonalen Auslesen
 }
 
 size_t getLeftShift(size_t idx) {  // logisches und ergibt linksshift
-    static const std::array<size_t, 81> impl = {0,0,0,1,1,1,3,3,3,
-                                                3,7,7,7,7,7,15,15,15,
-                                                15,15,15,31,31,31,31,31,31,
-                                                31,63,63,63,63,63,63,63,63,
-                                                127,127,127,127,127,127,127,127,127,
-                                                63,63,63,63,63,63,63,63,31,
-                                                31,31,31,31,31,31,15,15,15,
-                                                15,15,15,7,7,7,7,7,3,
-                                                3,3,3,1,1,1,0,0,0
-                                         };
+//    static const std::array<size_t, 81> impl = {0,0,0,1,1,1,3,3,3,
+//                                                3,7,7,7,7,7,15,15,15,
+//                                                15,15,15,31,31,31,31,31,31,
+//                                                31,63,63,63,63,63,63,63,63,
+//                                                127,127,127,127,127,127,127,127,127,
+//                                                63,63,63,63,63,63,63,63,31,
+//                                                31,31,31,31,31,31,15,15,15,
+//                                                15,15,15,7,7,7,7,7,3,
+//                                                3,3,3,1,1,1,0,0,0
+//                                         };
+
+        static const std::array<size_t, 81> impl = {1,  3,  3,  7,  7,  7, 15, 15, 15,
+                                                    15, 31, 31, 31, 31, 31, 63, 63, 63,
+                                                    63, 63, 63,127,127,127,127,127,127,
+                                                    127,255,255,255,255,255,255,255,255,
+                                                    511,511,511,511,511,511,511,511,511,
+                                                    255,255,255,255,255,255,255,255,127,
+                                                    127,127,127,127,127,127, 63, 63, 63,
+                                                    63, 63, 63, 31, 31, 31, 31, 31, 15,
+                                                    15, 15, 15,  7,  7,  7,  3,  3,  1
+                                             };
 
     return impl[idx];
 }
@@ -489,7 +512,12 @@ size_t getBitboardNumber(size_t idx){ // gives the number of the bitboard in whi
 
 }
 
-
+// Debug Kommentar:
+// Drehen macht keine Fehler, bzw. das gedrehte Ausgangsbrett entspricht dem das wir erwarten würden
+// Die block patterns passen offensichtlich nicht zu den stellungen
+// Für ein gegebenes Blockpattern macht die Generate Diagonal Attack Funktion das richtige
+// die obigen Matrizen sind noch nicht überprüft
+// diese Stimmen nichtmit den Matrizen im Shogi Paper überein WARUM???
 
 int getBlockPatternPiFourth(BitBoard const& bb, size_t idx) {
     idx = turnPiFourth(idx); //Ermittle Position im gedrehten Brett
@@ -500,7 +528,7 @@ int getBlockPatternPiFourth(BitBoard const& bb, size_t idx) {
 
 int getBlockPatternMinusPiFourth(BitBoard const& bb, size_t idx) {
     idx = turnMinusPiFourth(idx);//Ermittle Position im gedrehten Brett
-    return (bb[getBitboardNumber(idx)] >> getRightShift(idx))&(getLeftShift(idx));  // Wollen 7 relevanten Einträge. Shiften dafür abhängig davon, in welcher Zeile wir sind, soweit nach rechts,
+    return ((bb[getBitboardNumber(idx)] >> getRightShift(idx)))&(getLeftShift(idx));  // Wollen 7 relevanten Einträge. Shiften dafür abhängig davon, in welcher Zeile wir sind, soweit nach rechts,
     // dass alles unwichtige null ist. Die 6 setzt sich zusammen aus den 5 die immer null sind und zusätzlich dem einen, das wir ignorieren, weil es am Rand ist.
     // Darum auch sieben statt 9 relevanten. Danach shiften wir wieder um 32-7 zurück. Die 7 sind die 7 die wir haben wollen.
 }
@@ -539,7 +567,7 @@ std::array<std::array<BitBoard, 81>,128> genDiagonalPiFourthAttack() { // 81 ist
             {
                 f[row][col] = bitboardPattern[i];
             }
-            if((j==40)&(pattern==17)){
+            if((j==40)&(pattern==30)){
                 std::cout<< "col: " <<max(0, j%9-j/9)<<", row: " << max(0, j/9-j%9)<<std::endl;
             std::cout <<"pattern " << bitboardPattern<< ", int2row " << int2row(pattern)<<std::endl;
             std::cout<< "f "<<f << std::endl;
@@ -582,7 +610,7 @@ std::array<std::array<BitBoard, 81>,128> genDiagonalMinusPiFourthAttack() { // 8
             {
                 f[row][col] = bitboardPattern[i];
             }
-            if((j==40)&(pattern==17)){
+            if((j==40)&(pattern==30)){
                  std::cout<< "col: " <<min(8, (j%9)+(j/9))+1<<", row: " << max(0, j/9-j%9)<<std::endl;
                 std::cout <<"pattern _45" << bitboardPattern<< ", int2row " << int2row(pattern)<<std::endl;
             std::cout<< "f "<<f << std::endl;
