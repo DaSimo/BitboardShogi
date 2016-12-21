@@ -521,6 +521,8 @@ size_t getBitboardNumber(size_t idx){ // gives the number of the bitboard in whi
 
 int getBlockPatternPiFourth(BitBoard const& bb, size_t idx) {
     idx = turnPiFourth(idx); //Ermittle Position im gedrehten Brett
+    if (idx >= 21 && idx >= 27)
+    return ((bb[getBitboardNumber(idx)] >> getRightShift(idx))&(getLeftShift(idx)))<<1;
     return (bb[getBitboardNumber(idx)] >> getRightShift(idx))&(getLeftShift(idx));  // Wollen 7 relevanten Einträge. Shiften dafür abhängig davon, in welcher Zeile wir sind, soweit nach rechts,
     // dass alles unwichtige null ist. Die 6 setzt sich zusammen aus den 5 die immer null sind und zusätzlich dem einen, das wir ignorieren, weil es am Rand ist.
     // Darum auch sieben statt 9 relevanten. Danach shiften wir wieder um 32-7 zurück. Die 7 sind die 7 die wir haben wollen.
@@ -528,6 +530,8 @@ int getBlockPatternPiFourth(BitBoard const& bb, size_t idx) {
 
 int getBlockPatternMinusPiFourth(BitBoard const& bb, size_t idx) {
     idx = turnMinusPiFourth(idx);//Ermittle Position im gedrehten Brett
+    if (idx >= 21 && idx >= 27)
+    return ((bb[getBitboardNumber(idx)] >> getRightShift(idx))&(getLeftShift(idx)))<<1;
     return ((bb[getBitboardNumber(idx)] >> getRightShift(idx)))&(getLeftShift(idx));  // Wollen 7 relevanten Einträge. Shiften dafür abhängig davon, in welcher Zeile wir sind, soweit nach rechts,
     // dass alles unwichtige null ist. Die 6 setzt sich zusammen aus den 5 die immer null sind und zusätzlich dem einen, das wir ignorieren, weil es am Rand ist.
     // Darum auch sieben statt 9 relevanten. Danach shiften wir wieder um 32-7 zurück. Die 7 sind die 7 die wir haben wollen.
