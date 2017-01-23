@@ -48,8 +48,8 @@ move(1)
         std::array<int, 81> temp_45=temp;
         for (int i=0;i<81;++i)
         {
-            temp45[i]=temp[turnPiFourth(i)];
-            temp_45[i] =temp[turnMinusPiFourth(i)];
+            temp45[turnPiFourth(i)]=temp[i];
+            temp_45[turnMinusPiFourth(i)] =temp[i];
         }
 //        std::cout<<"Temp_45 "<<temp45<<std::endl;
         Occupied45=mat2bb(temp45);
@@ -334,7 +334,17 @@ BitBoard Game::getMove(int org, int piece, int move){ //todo funktion so schreib
     case 5: //Turm
         return (GeneratingBitBoardsSliding[1][getBlockPattern(Occupied90, org)][org]|GeneratingBitBoardsSliding[0][getBlockPattern(Occupied, org)][org]);
     case 6: //Läufer
-        return (GeneratingBitBoardsSliding[2][getBlockPatternPiFourth(Occupied45, org)][org]|GeneratingBitBoardsSliding[3][getBlockPatternMinusPiFourth(Occupied_45, org)][org]);
+    {
+        std::cout <<"BlockPattern45: "<<getBlockPatternPiFourth(Occupied45, org)<<std::endl;
+        std::cout <<"BlockPattern_45: "<<getBlockPatternMinusPiFourth(Occupied_45, org)<<std::endl;
+
+
+       auto x=(GeneratingBitBoardsSliding[2][getBlockPatternPiFourth(Occupied45, org)][org]|GeneratingBitBoardsSliding[3][getBlockPatternMinusPiFourth(Occupied_45, org)][org]);
+       std::cout << "1"<<std::endl;
+       std::cout<<"2"<<std::endl;
+       std::cout << "3";
+       return x;
+    }
     default: //non-sliding pieces
         return GeneratingBitBoards[index(move)][piece][org]&(~(OccupiedPieces[index(move)][0]));
     }

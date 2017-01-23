@@ -377,60 +377,60 @@ size_t turnMinusPiFourth(size_t idx) {  // Dieses Array beantwortet im wesentlic
     // Diese ist auf Position 5. Dies sagt folgendes aus: Feld zwei wird durch Drehung auf Feld 5 abgebildet.
 
 
-//   static const  std::array<size_t,81>impl={0,2,5,9,14,20,27,35,44,
-//                               1,4,8,13,19,26,34,43,52,
-//                               3,7,12,18,25,33,42,51,59,
-//                               6,11,17,24,32,41,50,58,65,
-//                               10,16,23,31,40,49,57,64,70,
-//                               15,22,30,39,48,56,63,69,74,
-//                               21,29,38,47,55,62,68,73,77,
-//                               28,37,46,54,61,67,72,76,79,
-//                               36,45,53,60,66,71,75,78,80
+   static const  std::array<size_t,81>impl={0,2,5,9,14,20,27,35,44,
+                               1,4,8,13,19,26,34,43,52,
+                               3,7,12,18,25,33,42,51,59,
+                               6,11,17,24,32,41,50,58,65,
+                               10,16,23,31,40,49,57,64,70,
+                               15,22,30,39,48,56,63,69,74,
+                               21,29,38,47,55,62,68,73,77,
+                               28,37,46,54,61,67,72,76,79,
+                               36,45,53,60,66,71,75,78,80
 
-//    };
+    };
 
 
-     std::array<size_t, 81> impl =  { 0,9,1,18,10,2,27,19,11,   //man sieht hier, dass die Diagonalen von oben nach unten durchlaufen werden
-                                          3,36,28,20,12,4,45,37,29,
-                                          21,13,5,54,46,38,30,22,14,
-                                          6,63,55,47,39,31,23,15,7,
-                                          72,64,56,48,40,32,24,16,8,
-                                          73,65,57,49,41,33,25,17,74,
-                                          66,58, 50,42,34,26,75,67,59,
-                                          51,43,35,76,68,60,52,44,77,
-                                          69,61,53,78,70,62,79,71,80
-                                         };
+//     std::array<size_t, 81> impl =  { 0,9,1,18,10,2,27,19,11,   //man sieht hier, dass die Diagonalen von oben nach unten durchlaufen werden
+//                                          3,36,28,20,12,4,45,37,29,
+//                                          21,13,5,54,46,38,30,22,14,
+//                                          6,63,55,47,39,31,23,15,7,
+//                                          72,64,56,48,40,32,24,16,8,
+//                                          73,65,57,49,41,33,25,17,74,
+//                                          66,58, 50,42,34,26,75,67,59,
+//                                          51,43,35,76,68,60,52,44,77,
+//                                          69,61,53,78,70,62,79,71,80
+//                                         };
     return impl[idx];
 }
 
 
 size_t turnPiFourth(size_t idx) {  // drehe index (bzw. entsprechende figur) um 45° im Gegenuhrzeigersinn, 0 ursprünglich entspricht rechts unten.
-//     static const std::array<size_t, 81> impl={36,28,21,15,10,6,3,1,0,
-//                                                45,37,29,22,16,11,7,4,2,
-//                                                53,46,38,30,23,17,12,8,5,
-//                                                60,54,47,39,31,24,18,13,9,
-//                                                66,61,55,48,40,32,25,19,14,
-//                                                71,67,62,56,49,41,33,26,20,
-//                                                75,72,68,63,57,50,42,34,27,
-//                                                78,76,73,69,64,58,51,43,35,
-//                                                80,79,77,74,70,65,59,52,44
-//     };
+     static const std::array<size_t, 81> impl={36,28,21,15,10,6,3,1,0,
+                                                45,37,29,22,16,11,7,4,2,
+                                                53,46,38,30,23,17,12,8,5,
+                                                60,54,47,39,31,24,18,13,9,
+                                                66,61,55,48,40,32,25,19,14,
+                                                71,67,62,56,49,41,33,26,20,
+                                                75,72,68,63,57,50,42,34,27,
+                                                78,76,73,69,64,58,51,43,35,
+                                                80,79,77,74,70,65,59,52,44
+     };
 
 
-    static const std::array<size_t, 81> impl = { 8,7,17,6,16,26,5,15,25,
-                                                     35,4,14,24,34,44,3,13,23,33,43,53,
-                                                    2,12,22,32,42,52,62,
-                                                    1,11,21,31,41,51,61,71,
-                                                    0,10,20,30,40,50,60,70,80,
-                                                    9,19,29,39,49,59,69,79,
-                                                    18,28,38,48,58,68,78,
-                                                    27,37,47,57,67,77,
-                                                    36,46,56,66,76,
-                                                    45,55,65,75,
-                                                    54,64,74,
-                                                    63,73,
-                                                    72
-                                         };
+//    static const std::array<size_t, 81> impl = { 8,7,17,6,16,26,5,15,25,
+//                                                     35,4,14,24,34,44,3,13,23,33,43,53,
+//                                                    2,12,22,32,42,52,62,
+//                                                    1,11,21,31,41,51,61,71,
+//                                                    0,10,20,30,40,50,60,70,80,
+//                                                    9,19,29,39,49,59,69,79,
+//                                                    18,28,38,48,58,68,78,
+//                                                    27,37,47,57,67,77,
+//                                                    36,46,56,66,76,
+//                                                    45,55,65,75,
+//                                                    54,64,74,
+//                                                    63,73,
+//                                                    72
+//                                         };
 
 //    for(int j=0;j!=81;++j)
 //    {
@@ -443,55 +443,55 @@ size_t turnPiFourth(size_t idx) {  // drehe index (bzw. entsprechende figur) um 
 // verkürzte Diagonalen müssen nicht aufgefüllt werden!
 
 size_t getRightShift(size_t idx) {  // Zum Diagonalen Auslesen
-//    static const std::array<size_t, 81> impl = {27,25,25,22,22,22,18,18,18,
-//                                                18,13,13,13,13,13,7,7,7,
-//                                                7,7,7,1,1,1,1,1,1,
-//                                                1,19,19,19,19,19,19,19,19,
-//                                                10,10,10,10,10,10,10,10,10,
-//                                                2,2,2,2,2,2,2,2,22,
-//                                                22,22,22,22,22,22,16,16,16,
-//                                                16,16,16,11,11,11,11,11,7,
-//                                                7,7,7,4,4,4,2,2,0
-
-//                                         };
-
-    static const std::array<size_t, 81> impl = {26, 24, 24, 21, 21, 21, 17, 17, 17,
-                                                17, 12, 12, 12, 12, 12,  6,  6,  6,
-                                                6,  6,  6,  0,  0,  0,  0,  0,  0,
-                                                0, 18, 18, 18, 18, 18, 18, 18, 18,
-                                                9,  9,  9,  9,  9,  9,  9,  9,  9,
-                                                1,  1,  1,  1,  1,  1,  1,  1, 21,
-                                                21, 21, 21, 21, 21, 21, 15, 15, 15,
-                                                15, 15, 15, 10, 10, 10, 10, 10,  6,
-                                                6,  6,  6,  3,  3,  3,  1,  1,  0
+    static const std::array<size_t, 81> impl = {27,25,25,22,22,22,18,18,18,
+                                                18,13,13,13,13,13,7,7,7,
+                                                7,7,7,0,0,0,0,0,0,
+                                                0,19,19,19,19,19,19,19,19,
+                                                10,10,10,10,10,10,10,10,10,
+                                                2,2,2,2,2,2,2,2,22,
+                                                22,22,22,22,22,22,16,16,16,
+                                                16,16,16,11,11,11,11,11,7,
+                                                7,7,7,4,4,4,2,2,0
 
                                          };
+
+//    static const std::array<size_t, 81> impl = {26, 24, 24, 21, 21, 21, 17, 17, 17,
+//                                                17, 12, 12, 12, 12, 12,  6,  6,  6,
+//                                                6,  6,  6,  0,  0,  0,  0,  0,  0,
+//                                                0, 18, 18, 18, 18, 18, 18, 18, 18,
+//                                                9,  9,  9,  9,  9,  9,  9,  9,  9,
+//                                                1,  1,  1,  1,  1,  1,  1,  1, 21,
+//                                                21, 21, 21, 21, 21, 21, 15, 15, 15,
+//                                                15, 15, 15, 10, 10, 10, 10, 10,  6,
+//                                                6,  6,  6,  3,  3,  3,  1,  1,  0
+
+//                                         };
 
     return impl[idx];
 }
 
 size_t getLeftShift(size_t idx) {  // logisches und ergibt linksshift
-//    static const std::array<size_t, 81> impl = {0,0,0,1,1,1,3,3,3,
-//                                                3,7,7,7,7,7,15,15,15,
-//                                                15,15,15,31,31,31,31,31,31,
-//                                                31,63,63,63,63,63,63,63,63,
-//                                                127,127,127,127,127,127,127,127,127,
-//                                                63,63,63,63,63,63,63,63,31,
-//                                                31,31,31,31,31,31,15,15,15,
-//                                                15,15,15,7,7,7,7,7,3,
-//                                                3,3,3,1,1,1,0,0,0
-//                                         };
+    static const std::array<size_t, 81> impl = {0,0,0,1,1,1,3,3,3,
+                                                3,7,7,7,7,7,15,15,15,
+                                                15,15,15,31,31,31,31,31,31,
+                                                31,63,63,63,63,63,63,63,63,
+                                                127,127,127,127,127,127,127,127,127,
+                                                63,63,63,63,63,63,63,63,31,
+                                                31,31,31,31,31,31,15,15,15,
+                                                15,15,15,7,7,7,7,7,3,
+                                                3,3,3,1,1,1,0,0,0
+                                         };
 
-        static const std::array<size_t, 81> impl = {1,  3,  3,  7,  7,  7, 15, 15, 15,
-                                                    15, 31, 31, 31, 31, 31, 63, 63, 63,
-                                                    63, 63, 63,127,127,127,127,127,127,
-                                                    127,255,255,255,255,255,255,255,255,
-                                                    511,511,511,511,511,511,511,511,511,
-                                                    255,255,255,255,255,255,255,255,127,
-                                                    127,127,127,127,127,127, 63, 63, 63,
-                                                    63, 63, 63, 31, 31, 31, 31, 31, 15,
-                                                    15, 15, 15,  7,  7,  7,  3,  3,  1
-                                             };
+//        static const std::array<size_t, 81> impl = {1,  3,  3,  7,  7,  7, 15, 15, 15,
+//                                                    15, 31, 31, 31, 31, 31, 63, 63, 63,
+//                                                    63, 63, 63,127,127,127,127,127,127,
+//                                                    127,255,255,255,255,255,255,255,255,
+//                                                    511,511,511,511,511,511,511,511,511,
+//                                                    255,255,255,255,255,255,255,255,127,
+//                                                    127,127,127,127,127,127, 63, 63, 63,
+//                                                    63, 63, 63, 31, 31, 31, 31, 31, 15,
+//                                                    15, 15, 15,  7,  7,  7,  3,  3,  1
+//                                             };
 
     return impl[idx];
 }
@@ -518,21 +518,69 @@ size_t getBitboardNumber(size_t idx){ // gives the number of the bitboard in whi
 // Für ein gegebenes Blockpattern macht die Generate Diagonal Attack Funktion das richtige
 // die obigen Matrizen sind noch nicht überprüft
 // diese Stimmen nichtmit den Matrizen im Shogi Paper überein WARUM???
+// Drehfehler!!!!
+
+#include <atomic>
+#include "game.h"
+
+u_int32_t rev2(u_int32_t x) {
+   x = (x & 0x55555555) <<  1 | (x >>  1) & 0x55555555;
+   x = (x & 0x33333333) <<  2 | (x >>  2) & 0x33333333;
+   x = (x & 0x0F0F0F0F) <<  4 | (x >>  4) & 0x0F0F0F0F;
+   x = (x << 24) | ((x & 0xFF00) << 8) |
+       ((x >> 8) & 0xFF00) | (x >> 24);
+   x >>= 5;
+   x &= int(pow(2, 27))-1;
+   return x;
+}
 
 int getBlockPatternPiFourth(BitBoard const& bb, size_t idx) {
-    idx = turnPiFourth(idx); //Ermittle Position im gedrehten Brett
-    if (idx >= 21 && idx >= 27)
-    return ((bb[getBitboardNumber(idx)] >> getRightShift(idx))&(getLeftShift(idx)))<<1;
-    return (bb[getBitboardNumber(idx)] >> getRightShift(idx))&(getLeftShift(idx));  // Wollen 7 relevanten Einträge. Shiften dafür abhängig davon, in welcher Zeile wir sind, soweit nach rechts,
-    // dass alles unwichtige null ist. Die 6 setzt sich zusammen aus den 5 die immer null sind und zusätzlich dem einen, das wir ignorieren, weil es am Rand ist.
-    // Darum auch sieben statt 9 relevanten. Danach shiften wir wieder um 32-7 zurück. Die 7 sind die 7 die wir haben wollen.
+    idx = turnPiFourth(idx); //Ermittle Position im gedrehten Brett (Braucht man das wirklich?)
+//    cout << "Plus, idx: " << idx << endl;
+//    cout <<"zeile 1: ";
+    static atomic_flag af = ATOMIC_FLAG_INIT;
+    if (not af.test_and_set()) {
+        Game g;
+        cout << bb<<endl;
+        auto bbint = bb[getBitboardNumber(idx)];
+        std::array<int, 27> inverseorder;
+        for (auto&& it : inverseorder) {
+            it = bbint%2;
+            bbint /= 2;
+        }
+        for_each(inverseorder.rbegin(), inverseorder.rend(), [](int j) {cout << j << ", "; });
+    cout << endl;
+}
+
+//cout << endl;
+//    if (idx >= 21 && idx <= 27)
+//        //bb[0]oder bb[2]?
+//    {
+//        cout << "right " << (getRightShift(idx) )<< ", left " << getLeftShift(idx) << endl;
+//          return ((bb[getBitboardNumber(idx)] >> (getRightShift(idx)-1))&(getLeftShift(idx)));
+//    }
+
+//return (bb[0]&63)<<1;
+//cout << "right " << (getRightShift(idx)) << ", left " << getLeftShift(idx) << endl;
+return (rev2(bb[getBitboardNumber(idx)]) >> (getRightShift(idx)))&(getLeftShift(idx));  // Wollen 7 relevanten Einträge. Shiften dafür abhängig davon, in welcher Zeile wir sind, soweit nach rechts,
+//Eine Möglichkeit ist bb[getBitBoardNumber(idx)] zu invertieren.
+// Oder Chifts anpassen
+
+// dass alles unwichtige null ist. Die 6 setzt sich zusammen aus den 5 die immer null sind und zusätzlich dem einen, das wir ignorieren, weil es am Rand ist.
+// Darum auch sieben statt 9 relevanten. Danach shiften wir wieder um 32-7 zurück. Die 7 sind die 7 die wir haben wollen.
 }
 
 int getBlockPatternMinusPiFourth(BitBoard const& bb, size_t idx) {
     idx = turnMinusPiFourth(idx);//Ermittle Position im gedrehten Brett
-    if (idx >= 21 && idx >= 27)
-    return ((bb[getBitboardNumber(idx)] >> getRightShift(idx))&(getLeftShift(idx)))<<1;
-    return ((bb[getBitboardNumber(idx)] >> getRightShift(idx)))&(getLeftShift(idx));  // Wollen 7 relevanten Einträge. Shiften dafür abhängig davon, in welcher Zeile wir sind, soweit nach rechts,
+//    cout << "Minus, idx: " << idx << endl;
+//    if (idx >= 21 && idx <= 27)
+//    {
+//        cout << "right " << (getRightShift(idx)) << ", left " << getLeftShift(idx) << endl;
+//        return ((bb[getBitboardNumber(idx)] >> (getRightShift(idx)-1))&(getLeftShift(idx)));
+//    }
+        //return (bb[0]&63)<<1;
+//    cout << "right " << (getRightShift(idx)) << ", left " << getLeftShift(idx) << endl;
+    return (rev2(bb[getBitboardNumber(idx)]) >> (getRightShift(idx)))&(getLeftShift(idx));  // Wollen 7 relevanten Einträge. Shiften dafür abhängig davon, in welcher Zeile wir sind, soweit nach rechts,
     // dass alles unwichtige null ist. Die 6 setzt sich zusammen aus den 5 die immer null sind und zusätzlich dem einen, das wir ignorieren, weil es am Rand ist.
     // Darum auch sieben statt 9 relevanten. Danach shiften wir wieder um 32-7 zurück. Die 7 sind die 7 die wir haben wollen.
 }

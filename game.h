@@ -2,7 +2,7 @@
 #define GAME_H
 #include "bitboard.h"
 #include"MoveGeneration.h"
-
+#include <iostream>
 #include <iosfwd>
 
 class Game

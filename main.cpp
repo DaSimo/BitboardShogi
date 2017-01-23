@@ -46,20 +46,24 @@ int main()
 //    temp.setBit(11, 1);
 //    cout << temp.getBit(10) << endl;
 
-    for (int m=0; m<=80; ++m)
+    for (int m=4; m<=8; ++m)
     {
     Game Spiel;
-    Spiel.makeMove(80,m,1);
-    //Spiel.makeMove(0,72,0);
-    //cout << m<<endl<<Spiel<<endl;
+//    Spiel.makeMove(80,m,1);
+//    Spiel.makeMove(0,72,0);
+    cout << m<<endl<<Spiel<<endl;
+    cout <<getBlockPatternPiFourth(Spiel.Occupied45,m)<<" : ";
+    for (size_t i=0;i!=11;++i){
+        cout  <<int2row(getBlockPatternPiFourth(Spiel.Occupied45,m))[i] << " | ";
+    }
+    cout <<"\n- "<<getBlockPatternMinusPiFourth(Spiel.Occupied_45,m)<<" : ";
+    for (size_t i=0;i!=11;++i){
+        cout  <<int2row(getBlockPatternMinusPiFourth(Spiel.Occupied_45,m))[i]<< " | ";
+    }
+    cout <<endl;
+    cout <<1238748975;
+    cout <<"bla"<<endl;
     cout << m<< endl<<Spiel.getMove(m,6,-1)<<endl;
-    for (size_t i=0;i!=11;++i){
-        cout  <<int2row(getBlockPatternPiFourth(Spiel.Occupied45,m))[i];
-    }
-    cout <<"\n-";
-    for (size_t i=0;i!=11;++i){
-        cout  <<int2row(getBlockPatternMinusPiFourth(Spiel.Occupied_45,m))[i];
-    }
    cout <<endl;
     }
 //    BitBoard b;
