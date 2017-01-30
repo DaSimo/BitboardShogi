@@ -619,7 +619,7 @@ std::array<std::array<BitBoard, 81>,128> genDiagonalPiFourthAttack() { // 81 ist
             {
                 f[row][col] = bitboardPattern[i];
             }
-            if((j==40)&(pattern==30)){
+            if((j==2)&(pattern==8)){
                 std::cout<< "col: " <<max(0, j%9-j/9)<<", row: " << max(0, j/9-j%9)<<std::endl;
             std::cout <<"pattern " << bitboardPattern<< ", int2row " << int2row(pattern)<<std::endl;
             std::cout<< "f "<<f << std::endl;
@@ -658,12 +658,12 @@ std::array<std::array<BitBoard, 81>,128> genDiagonalMinusPiFourthAttack() { // 8
             std::fill(lower, upper+1, true);  // mittlerer teil ist jetzt true
 
             // copy to diagonal
-            for (int col=min(8, (j%9)+(j/9))+1, row=max(0, (j/9)-(j%9)), i=0 ; col!=-1 and row!=11; --col, ++row, ++i)
+            for (int col=max(0, (j%9)+(j/9)), row=max(0, (j/9)-(j%9)), i=0 ; col!=-1 and row!=11; --col, ++row, ++i)
             {
                 f[row][col] = bitboardPattern[i];
             }
-            if((j==40)&(pattern==30)){
-                 std::cout<< "col: " <<min(8, (j%9)+(j/9))+1<<", row: " << max(0, j/9-j%9)<<std::endl;
+            if((j==2)&(pattern==1)){
+                 std::cout<< "col: " <<max(0, (j%9)+(j/9))<<", row: " << max(0, j/9-j%9)<<std::endl;
                 std::cout <<"pattern _45" << bitboardPattern<< ", int2row " << int2row(pattern)<<std::endl;
             std::cout<< "f "<<f << std::endl;
             std::cout << "bitboard f "<<std::endl<<mat2bb(f)<<std::endl; }

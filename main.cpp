@@ -46,7 +46,7 @@ int main()
 //    temp.setBit(11, 1);
 //    cout << temp.getBit(10) << endl;
 
-    for (int m=4; m<=8; ++m)
+    for (int m=2; m<=2; ++m)
     {
     Game Spiel;
 //    Spiel.makeMove(80,m,1);
