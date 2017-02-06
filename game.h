@@ -63,6 +63,9 @@ class Game
     int index(int move_);
     BitBoard getMove(int org, int move);
     BitBoard getMove(int org, int piece, int move);
+
+    Game(const std::string& fenString);
+
 };
 
 

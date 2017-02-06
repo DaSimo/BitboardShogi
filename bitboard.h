@@ -12,7 +12,6 @@
 class BitBoard {
     uint32_t bb[3];
 public:
-    friend int main();
     BitBoard() : bb{0, 0, 0} {}
 uint32_t& operator [](size_t i) { return bb[i]; }
 uint32_t const& operator [](size_t i) const { return bb[i]; }
@@ -38,7 +37,10 @@ BitBoard operator >>(int i) const;
 std::ostream& print(std::ostream& out) const ;
 void setBit(int place, int bit);
 bool getBit(int place);
+std::string toString() const;
 };
+
+
 
 BitBoard mat2bb(std::array<bool, 81> const& mat);
 template <typename I>
@@ -65,5 +67,8 @@ inline BitBoard mat2bb(std::array<I, 81> const& mat) {
     }
     return result;
 }
+
+//todo insert funktion schreiben
+void insert(BitBoard& board,int index);
 
 #endif // BITBOARD_H

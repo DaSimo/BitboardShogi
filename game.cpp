@@ -1,6 +1,7 @@
 #include "game.h"
 #include <iomanip>
 #include "util.h"
+#include "bitboard.h"
 
 Game::Game() :
     Occupied(mat2bb({1,1,1,1,1,1,1,1,1,
@@ -400,3 +401,73 @@ std::ostream & operator <<(std::ostream & out, Game & g){
 
     return out;
 }
+    Game::Game(const std::string& fenString)
+    {
+        // K König, P Bauer, N Springer, B Läufer, R Turm, S Silber General, G Gold General, L Lanze,
+        // leere Felder werden mit Zahlen angegeben
+        // klein für schwarz groß für weiß
+        // + als Präfix für Upgegraded
+        // Zeilenseperator ist /
+        // andere Suffixe kommen noch
+
+        auto tokens = split(fenString);
+        auto rows = split(tokens[0],'/');
+
+        for (int row=0; row < rows.size(); ++row)
+        {
+
+            int count = 0;
+            for(int j=0; j < rows[row].size(); ++j)
+            {   int bbn = count + row * 9;
+                BitBoard *piece = 0;
+                BitBoard *color = 0;
+                switch(rows[row][j])
+                {
+                case 'K':
+                    piece = &(OccupiedWhiteKing());
+                    color = &(OccupiedWhite());
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'R':
+                    piece = &(OccupiedWhiteRook() );
+                   color = &(OccupiedWhite());
+                    break;
+
+                case 'k':
+                    piece = &(OccupiedBlackKing());
+                    color = &(OccupiedBlack());
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'r':
+                    piece = &(OccupiedBlackRook() );
+                   color = &(OccupiedBlack());
+                    break;
+
+
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9': count += rows[row][j]-'0';
+                    break;
+
+                default: throw "Invalid fen string!";
+                }
+                if(piece){
+                insert(*piece,bbn   );
+                insert(*color,bbn);
+                insert(Occupied, bbn);
+                ++count;
+                }
+            }
+        }
+
+
+    }
+

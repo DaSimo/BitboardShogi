@@ -1,5 +1,5 @@
 #include "bitboard.h"
-
+#include <sstream>
 
 using namespace std;
 
@@ -25,6 +25,15 @@ std::ostream& BitBoard::print(std::ostream& out) const {
     //out << bb[0] << endl << bb[1] << endl << bb[2] << endl;
     return out;
 }
+
+std::string BitBoard::toString() const
+{
+    std::ostringstream os;
+    os << *this;
+    return os.str();
+}
+
+
 bool BitBoard::operator ==(BitBoard const& rhs) const {
     return (*this)[0] == rhs[0] and (*this)[1] == rhs[1] and (*this)[2] == rhs[2];
 }
@@ -128,4 +137,9 @@ BitBoard mat2bb(std::array<bool, 81> const& mat) {
         result[(i)/3] += mat[i_] * static_cast<uint32_t>(std::pow(2, j+ (i)*9 - 27*((i)/3)));
     }
     return result;
+}
+void insert(BitBoard& board,int index)
+{
+
+    board[index/27]|=(uint32_t)pow(2,(index%27));
 }
