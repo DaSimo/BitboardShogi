@@ -7,6 +7,9 @@
 
 class Game
 {
+    void handlefenstring0(std::string s);
+    void handlefenstring1(std::string s);
+    void handlefenstring2(std::string s);
     public:
   BitBoard Occupied;
   BitBoard Occupied90;

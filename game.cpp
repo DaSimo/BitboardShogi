@@ -1,5 +1,6 @@
 #include "game.h"
 #include <iomanip>
+#include <exception>
 #include "util.h"
 #include "bitboard.h"
 
@@ -330,20 +331,20 @@ void Game::makeMove(int org, int dest, bool up) // org = Ursprungsfeld, Zahl von
 BitBoard Game::getMove(int org, int piece, int move){ //todo funktion so schreiben, dass man mögliche Züge einer Figur auch auf Felder anwenden kann auf der besagte Fugir nicht steht.
     switch (piece){
     case 2: //Lanze
-        std::cout << Lance[index(move)][org/9] << std::endl;
+//        std::cout << Lance[index(move)][org/9] << std::endl;
         return GeneratingBitBoardsSliding[1][getBlockPattern(Occupied90, org)][org]&Lance[index(move)][org/9]; //todo mit Lanzen BitBoard kombinieren
     case 5: //Turm
-        return (GeneratingBitBoardsSliding[1][getBlockPattern(Occupied90, org)][org]|GeneratingBitBoardsSliding[0][getBlockPattern(Occupied, org)][org]);
+        return (GeneratingBitBoardsSliding[1][getBlockPattern(Occupied90, turnPiHalf(org))][org]|GeneratingBitBoardsSliding[0][getBlockPattern(Occupied, org)][org]);
     case 6: //Läufer
     {
-        std::cout <<"BlockPattern45: "<<getBlockPatternPiFourth(Occupied45, org)<<std::endl;
-        std::cout <<"BlockPattern_45: "<<getBlockPatternMinusPiFourth(Occupied_45, org)<<std::endl;
+//        std::cout <<"BlockPattern45: "<<getBlockPatternPiFourth(Occupied45, org)<<std::endl;
+//        std::cout <<"BlockPattern_45: "<<getBlockPatternMinusPiFourth(Occupied_45, org)<<std::endl;
 
 
        auto x=(GeneratingBitBoardsSliding[2][getBlockPatternPiFourth(Occupied45, org)][org]|GeneratingBitBoardsSliding[3][getBlockPatternMinusPiFourth(Occupied_45, org)][org]);
-       std::cout << "1"<<std::endl;
-       std::cout<<"2"<<std::endl;
-       std::cout << "3";
+//       std::cout << "1"<<std::endl;
+//       std::cout<<"2"<<std::endl;
+//       std::cout << "3";
        return x;
     }
     default: //non-sliding pieces
@@ -401,6 +402,7 @@ std::ostream & operator <<(std::ostream & out, Game & g){
 
     return out;
 }
+
     Game::Game(const std::string& fenString)
     {
         // K König, P Bauer, N Springer, B Läufer, R Turm, S Silber General, G Gold General, L Lanze,
@@ -408,11 +410,41 @@ std::ostream & operator <<(std::ostream & out, Game & g){
         // klein für schwarz groß für weiß
         // + als Präfix für Upgegraded
         // Zeilenseperator ist /
+        // erster Suffix, mit Leer gerennt, ist 0 für Weiß am Zug und 1 für Schwarz am Zug
+        // zweiter Suffix sind die geschlagenen Figuren wieder mit Leer getrennt, dargestellt wird das durch
+        // Figurenmarker gefolgt von der Anzahl an geschlagenen Figuren, z.B P3 heißt weiß hat 3 geschlagene
+        // Bauern, l1 heißt Schwarz hat eine geschlagene Lanze
         // andere Suffixe kommen noch
 
         auto tokens = split(fenString);
-        auto rows = split(tokens[0],'/');
 
+
+
+
+
+
+
+        if (tokens.size() < 2) { throw std::invalid_argument("fen string is too short"); }
+
+        handlefenstring0(tokens[0]);
+        handlefenstring1(tokens[1]);
+        if (tokens.size()>=3) { handlefenstring2(tokens[2]); }
+        else { CapturedPieces = {}; }
+
+
+
+
+
+
+
+
+    }
+
+
+
+    void Game::handlefenstring0(std::string s)
+    {
+        auto rows = split(s,'/');
         for (int row=0; row < rows.size(); ++row)
         {
 
@@ -429,6 +461,42 @@ std::ostream & operator <<(std::ostream & out, Game & g){
                     //todo rotierte BitBoards hinzufügen
                     break;
 
+                case 'P':
+                    piece = &(OccupiedWhitePawn());
+                    color = &(OccupiedWhite());
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'N':
+                    piece = &(OccupiedWhiteKnight());
+                    color = &(OccupiedWhite());
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'L':
+                    piece = &(OccupiedWhiteLance());
+                    color = &(OccupiedWhite());
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'B':
+                    piece = &(OccupiedWhiteBishop());
+                    color = &(OccupiedWhite());
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'S':
+                    piece = &(OccupiedWhiteSilver());
+                    color = &(OccupiedWhite());
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'G':
+                    piece = &(OccupiedWhiteGold());
+                    color = &(OccupiedWhite());
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
                 case 'R':
                     piece = &(OccupiedWhiteRook() );
                    color = &(OccupiedWhite());
@@ -440,9 +508,137 @@ std::ostream & operator <<(std::ostream & out, Game & g){
                     //todo rotierte BitBoards hinzufügen
                     break;
 
+                case 'p':
+                    piece = &(OccupiedBlackPawn());
+                    color = &(OccupiedBlack());
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'n':
+                    piece = &(OccupiedBlackKnight());
+                    color = &(OccupiedBlack());
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'l':
+                    piece = &(OccupiedBlackLance());
+                    color = &(OccupiedBlack());
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'b':
+                    piece = &(OccupiedBlackBishop());
+                    color = &(OccupiedBlack());
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 's':
+                    piece = &(OccupiedBlackSilver());
+                    color = &(OccupiedBlack());
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'g':
+                    piece = &(OccupiedBlackGold());
+                    color = &(OccupiedBlack());
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
                 case 'r':
                     piece = &(OccupiedBlackRook() );
                    color = &(OccupiedBlack());
+                    break;
+
+                case '+':
+                    ++j;
+                    switch(rows[row][j])
+                    {
+                    case 'P':
+                        piece = &(OccupiedWhitePawnUp());
+                        color = &(OccupiedWhite());
+                        //todo rotierte BitBoards hinzufügen
+                        break;
+
+                    case 'N':
+                        piece = &(OccupiedWhiteKnightUp());
+                        color = &(OccupiedWhite());
+                        //todo rotierte BitBoards hinzufügen
+                        break;
+
+                    case 'L':
+                        piece = &(OccupiedWhiteLanceUp());
+                        color = &(OccupiedWhite());
+                        //todo rotierte BitBoards hinzufügen
+                        break;
+
+                    case 'B':
+                        piece = &(OccupiedWhiteBishopUp());
+                        color = &(OccupiedWhite());
+                        //todo rotierte BitBoards hinzufügen
+                        break;
+
+                    case 'S':
+                        piece = &(OccupiedWhiteSilverUp());
+                        color = &(OccupiedWhite());
+                        //todo rotierte BitBoards hinzufügen
+                        break;
+
+                    case 'G':
+                        piece = &(OccupiedWhiteGoldUp());
+                        color = &(OccupiedWhite());
+                        //todo rotierte BitBoards hinzufügen
+                        break;
+
+                    case 'R':
+                        piece = &(OccupiedWhiteRookUp() );
+                       color = &(OccupiedWhite());
+                        break;
+
+                    case 'p':
+                        piece = &(OccupiedBlackPawnUp());
+                        color = &(OccupiedBlack());
+                        //todo rotierte BitBoards hinzufügen
+                        break;
+
+                    case 'n':
+                        piece = &(OccupiedBlackKnightUp());
+                        color = &(OccupiedBlack());
+                        //todo rotierte BitBoards hinzufügen
+                        break;
+
+                    case 'l':
+                        piece = &(OccupiedBlackLanceUp());
+                        color = &(OccupiedBlack());
+                        //todo rotierte BitBoards hinzufügen
+                        break;
+
+                    case 'b':
+                        piece = &(OccupiedBlackBishopUp());
+                        color = &(OccupiedBlack());
+                        //todo rotierte BitBoards hinzufügen
+                        break;
+
+                    case 's':
+                        piece = &(OccupiedBlackSilverUp());
+                        color = &(OccupiedBlack());
+                        //todo rotierte BitBoards hinzufügen
+                        break;
+
+                    case 'g':
+                        piece = &(OccupiedBlackGoldUp());
+                        color = &(OccupiedBlack());
+                        //todo rotierte BitBoards hinzufügen
+                        break;
+
+                    case 'r':
+                        piece = &(OccupiedBlackRookUp() );
+                       color = &(OccupiedBlack());
+                        break;
+
+                    default: throw std::invalid_argument("Invalid fen string!");
+
+                    }
+
                     break;
 
 
@@ -459,15 +655,146 @@ std::ostream & operator <<(std::ostream & out, Game & g){
 
                 default: throw "Invalid fen string!";
                 }
+
+
                 if(piece){
                 insert(*piece,bbn   );
                 insert(*color,bbn);
                 insert(Occupied, bbn);
+                insert(Occupied90, turnPiHalf(bbn));
+                insert(Occupied45, turnPiFourth(bbn));
+                insert(Occupied_45, turnMinusPiFourth(bbn));
                 ++count;
                 }
             }
         }
-
-
     }
 
+    void Game::handlefenstring1(std::string s)
+    {
+        switch(s.front()){
+        case '0':
+            move=1;
+            break;
+        case '1':
+            move=-1;
+            break;
+
+        }
+    }
+
+    void Game::handlefenstring2(std::string s)
+    {
+        CapturedPieces = {};
+        for (unsigned j=0; j<s.size(); j+=2) {
+
+            int piece = 0;
+            int color = 0;
+            int number = 0;
+            switch(s[j]){
+
+                case 'P':
+                    piece = 0;
+                    color = 1;
+                    number = s[j+1]-'0';
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'N':
+                    piece = 1;
+                    color = 1;
+                    number = s[j+1]-'0';
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'L':
+                    piece = 2;
+                    color = 1;
+                    number = s[j+1]-'0';
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'B':
+                    piece = 5;
+                    color = 1;
+                    number = s[j+1]-'0';
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'S':
+                    piece = 3;
+                    color = 1;
+                    number = s[j+1]-'0';
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'G':
+                    piece = 4;
+                    color = 1;
+                    number = s[j+1]-'0';
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'R':
+                    piece = 6;
+                   color = 1;
+                   number = s[j+1]-'0';
+                    break;
+
+                case 'p':
+                    piece = 0;
+                    color = -1;
+                    number = s[j+1]-'0';
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'n':
+                    piece = 1;
+                    color = -1;
+                    number = s[j+1]-'0';
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'l':
+                    piece = 2;
+                    color = -1;
+                    number = s[j+1]-'0';
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'b':
+                    piece = 5;
+                    color = -1;
+                    number = s[j+1]-'0';
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 's':
+                    piece = 3;
+                    color = -1;
+                    number = s[j+1]-'0';
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'g':
+                    piece = 4;
+                    color = -1;
+                    number = s[j+1]-'0';
+                    //todo rotierte BitBoards hinzufügen
+                    break;
+
+                case 'r':
+                    piece = 6;
+                   color = -1;
+                   number = s[j+1]-'0';
+                    break;
+
+
+                default: throw std::invalid_argument("Invalid fen string!");
+                }
+
+
+            CapturedPieces[index(color)][piece] = number;
+            }
+
+    }

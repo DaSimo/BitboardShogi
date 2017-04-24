@@ -265,17 +265,17 @@ std::array<std::array<BitBoard, 81>,128> genRankAttack() { // 81 ist die Positio
             std::array<std::array<bool, 11>, 11> f;
             std::fill(begin(f), end(f), std::array<bool, 11>{false, false, false, false, false, false, false, false, false, false, false});
             auto bitboardPattern = int2row(pattern);
-          auto upper = std::find(begin(bitboardPattern)+currentCol+2, end(bitboardPattern), true);
-          auto lower = begin(bitboardPattern) + currentCol+1;
-          while (lower!=begin(bitboardPattern)) {
+            auto upper = std::find(begin(bitboardPattern)+currentCol, end(bitboardPattern), true);
+            auto lower = begin(bitboardPattern) + currentCol;
+            while (lower!=begin(bitboardPattern)) {
               --lower;
               if (*lower == true) { break; }
-          }
+            }
             std::fill(begin(bitboardPattern), end(bitboardPattern), false);  // alles false
             std::fill(lower, upper+1, true);  // mittlerer teil ist jetzt true
             f[currentRow+1] = bitboardPattern;
             result[pattern][j] = mat2bb(f);
-     }
+        }
     }
 
 
@@ -287,10 +287,24 @@ std::array<std::array<BitBoard, 81>,128> const& RankAttack() {
     return data;
 }
 
+int bla(int b)
+{
+//    int a=0;
+//    int temp = b;
+//    for (int i = 0; i<7;++i)
+//        {
+//            int temp2 = temp%2;
+//            temp=temp/2;
+//            a+= ((int)pow(2, 6-i)*temp2);
+
+//        }
+    return b;
+}
+
 
 int getBlockPattern(BitBoard const& bb, size_t idx) {
     auto shift = (idx/9)%3;  // zeile in bitboard-drittel
-    return bb[idx/27] << (9*(2-shift)+6) >> 25;  // Wollen 7 relevanten Einträge. Shiften dafür abhängig davon, in welcher Zeile wir sind, soweit nach rechts,
+    return bla((int)(bb[idx/27] << (9*(2-shift)+6) >> 25));  // Wollen 7 relevanten Einträge. Shiften dafür abhängig davon, in welcher Zeile wir sind, soweit nach rechts,
     // dass alles unwichtige null ist. Die 6 setzt sich zusammen aus den 5 die immer null sind und zusätzlich dem einen, das wir ignorieren, weil es am Rand ist.
     // Darum auch sieben statt 9 relevanten. Danach shiften wir wieder um 32-7 zurück. Die 7 sind die 7 die wir haben wollen.
 }
@@ -538,19 +552,19 @@ int getBlockPatternPiFourth(BitBoard const& bb, size_t idx) {
     idx = turnPiFourth(idx); //Ermittle Position im gedrehten Brett (Braucht man das wirklich?)
 //    cout << "Plus, idx: " << idx << endl;
 //    cout <<"zeile 1: ";
-    static atomic_flag af = ATOMIC_FLAG_INIT;
-    if (not af.test_and_set()) {
-        Game g;
-        cout << bb<<endl;
-        auto bbint = bb[getBitboardNumber(idx)];
-        std::array<int, 27> inverseorder;
-        for (auto&& it : inverseorder) {
-            it = bbint%2;
-            bbint /= 2;
-        }
-        for_each(inverseorder.rbegin(), inverseorder.rend(), [](int j) {cout << j << ", "; });
-    cout << endl;
-}
+//    static atomic_flag af = ATOMIC_FLAG_INIT;
+//    if (not af.test_and_set()) {
+//        Game g;
+//        cout << bb<<endl;
+//        auto bbint = bb[getBitboardNumber(idx)];
+//        std::array<int, 27> inverseorder;
+//        for (auto&& it : inverseorder) {
+//            it = bbint%2;
+//            bbint /= 2;
+//        }
+//        for_each(inverseorder.rbegin(), inverseorder.rend(), [](int j) {cout << j << ", "; });
+//    cout << endl;
+//}
 
 //cout << endl;
 //    if (idx >= 21 && idx <= 27)
@@ -619,11 +633,11 @@ std::array<std::array<BitBoard, 81>,128> genDiagonalPiFourthAttack() { // 81 ist
             {
                 f[row][col] = bitboardPattern[i];
             }
-            if((j==2)&(pattern==8)){
-                std::cout<< "col: " <<max(0, j%9-j/9)<<", row: " << max(0, j/9-j%9)<<std::endl;
-            std::cout <<"pattern " << bitboardPattern<< ", int2row " << int2row(pattern)<<std::endl;
-            std::cout<< "f "<<f << std::endl;
-            std::cout << "bitboard f "<<std::endl<<mat2bb(f)<<std::endl; }
+//            if((j==2)&(pattern==8)){
+//                std::cout<< "col: " <<max(0, j%9-j/9)<<", row: " << max(0, j/9-j%9)<<std::endl;
+//            std::cout <<"pattern " << bitboardPattern<< ", int2row " << int2row(pattern)<<std::endl;
+//            std::cout<< "f "<<f << std::endl;
+//            std::cout << "bitboard f "<<std::endl<<mat2bb(f)<<std::endl; }
             result[pattern][j] = mat2bb(f);
      }
     }
@@ -662,11 +676,11 @@ std::array<std::array<BitBoard, 81>,128> genDiagonalMinusPiFourthAttack() { // 8
             {
                 f[row][col] = bitboardPattern[i];
             }
-            if((j==2)&(pattern==1)){
-                 std::cout<< "col: " <<max(0, (j%9)+(j/9))<<", row: " << max(0, j/9-j%9)<<std::endl;
-                std::cout <<"pattern _45" << bitboardPattern<< ", int2row " << int2row(pattern)<<std::endl;
-            std::cout<< "f "<<f << std::endl;
-            std::cout << "bitboard f "<<std::endl<<mat2bb(f)<<std::endl; }
+//            if((j==2)&(pattern==1)){
+//                 std::cout<< "col: " <<max(0, (j%9)+(j/9))<<", row: " << max(0, j/9-j%9)<<std::endl;
+//                std::cout <<"pattern _45" << bitboardPattern<< ", int2row " << int2row(pattern)<<std::endl;
+//            std::cout<< "f "<<f << std::endl;
+//            std::cout << "bitboard f "<<std::endl<<mat2bb(f)<<std::endl; }
             result[pattern][j] = mat2bb(f);
      }
     }
